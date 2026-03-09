@@ -1,0 +1,34 @@
+{
+  "name": "claude-code-provider-switch",
+  "version": "1.0.0",
+  "description": "Cross-platform Claude Code settings switcher with OpenRouter support",
+  "main": "index.js",
+  "bin": {
+    "claude-switch": "./bin/claude-switch.js"
+  },
+  "scripts": {
+    "start": "node bin/claude-switch.js",
+    "install-global": "npm install -g .",
+    "link": "npm link",
+    "test": "node test/test.js"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "openrouter",
+    "switcher",
+    "cli"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    ".env"
+  ],
+  "preferGlobal": true
+}

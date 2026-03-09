@@ -217,6 +217,7 @@ function loadEnvFile() {
     log(`Error: Environment file not found: ${envFile}`, "red");
     log("Please create a .env file with your API keys:", "yellow");
     log("OPENROUTER_API_KEY=your_openrouter_key_here", "reset");
+    log("OPENROUTER_AUTH_TOKEN=your_openrouter_auth_token_here", "reset");
     log("ANTHROPIC_API_KEY=your_anthropic_key_here", "reset");
     log("OLLAMA_API_KEY=your_ollama_key_here", "reset");
     process.exit(1);
@@ -244,15 +245,15 @@ async function launchOpenRouter(showModelMenu = false, extraArgs = []) {
   const envVars = loadEnvFile();
   log(`Loading environment from: ${envFile}`, "yellow");
 
-  if (!envVars.OPENROUTER_API_KEY) {
-    log("Error: OPENROUTER_API_KEY not found in .env file", "red");
+  if (!envVars.OPENROUTER_AUTH_TOKEN) {
+    log("Error: OPENROUTER_AUTH_TOKEN not found in .env file", "red");
     process.exit(1);
   }
 
   let selectedModel = envVars.OPENROUTER_MODEL || "openrouter/free";
 
   if (showModelMenu) {
-    selectedModel = await showModelSelection(envVars.OPENROUTER_API_KEY);
+    selectedModel = await showModelSelection(envVars.OPENROUTER_AUTH_TOKEN);
   }
 
   log("Using:", "yellow");
@@ -263,7 +264,8 @@ async function launchOpenRouter(showModelMenu = false, extraArgs = []) {
   // Set environment variables
   const env = { ...process.env };
   env.ANTHROPIC_BASE_URL = "https://openrouter.ai/api";
-  env.ANTHROPIC_API_KEY = envVars.OPENROUTER_API_KEY;
+  env.ANTHROPIC_API_KEY = ""; // Empty for OpenRouter
+  env.ANTHROPIC_AUTH_TOKEN = envVars.OPENROUTER_AUTH_TOKEN;
   env.ANTHROPIC_MODEL = selectedModel;
 
   // Launch Claude Code

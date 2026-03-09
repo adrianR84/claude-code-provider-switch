@@ -8,8 +8,10 @@
   },
   "scripts": {
     "start": "node bin/claude-switch.js",
+    "dev": "node bin/claude-switch.js",
     "install-global": "npm install -g .",
     "link": "npm link",
+    "unlink": "npm unlink -g claude-code-provider-switch",
     "test": "node test/test.js"
   },
   "keywords": [

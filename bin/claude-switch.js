@@ -99,7 +99,7 @@ async function main() {
 
     // For provider selection, show model selection
     let selectedModel = null;
-    if (selectedProvider.id !== "default") {
+    if (selectedProvider.id !== "original") {
       selectedModel = await showModelSelectionForProvider(selectedProvider);
     }
 

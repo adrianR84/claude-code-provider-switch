@@ -108,7 +108,7 @@ async function runTests() {
       DEFAULT_MODELS.ANTHROPIC === "claude-3-5-sonnet-latest",
       "Default Anthropic model incorrect",
     );
-    assert(DEFAULT_MODELS.DEFAULT === "default", "Default model incorrect");
+    assert(DEFAULT_MODELS.ORIGINAL === "original", "Default model incorrect");
   });
 
   // Test 3: Cache key constants

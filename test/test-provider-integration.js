@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Tests for Ollama provider with validation and error handling
+ * Tests for provider integration with validation, error handling, and constants
+ * Covers all providers (Ollama, OpenRouter, Anthropic) and shared functionality
  */
 
 const fs = require("fs");
@@ -79,7 +80,7 @@ function assert(condition, message) {
 
 // Test suite
 async function runTests() {
-  console.log("🚀 Starting Ollama provider test suite...\n");
+  console.log("🚀 Starting provider integration test suite...\n");
 
   // Test 1: Ollama provider constants
   await test("Ollama constants are correctly defined", () => {
@@ -372,7 +373,7 @@ async function runTests() {
     );
   });
 
-  console.log("\n🎉 All Ollama provider tests passed!");
+  console.log("\n🎉 All provider integration tests passed!");
   console.log("\n📝 Test Summary:");
   console.log("  ✅ Constants properly defined and used");
   console.log("  ✅ Validation functions work correctly");
@@ -380,11 +381,12 @@ async function runTests() {
   console.log("  ✅ Improved logging without debug statements");
   console.log("  ✅ Cache functionality working");
   console.log("  ✅ Integration tests passing");
+  console.log("  ✅ All providers supported (Ollama, OpenRouter, Anthropic)");
 }
 
 // Run tests
 runTests().catch((error) => {
-  console.error("💥 Ollama provider test suite failed:", error.message);
+  console.error("💥 Provider integration test suite failed:", error.message);
   console.error(error.stack);
   process.exit(1);
 });

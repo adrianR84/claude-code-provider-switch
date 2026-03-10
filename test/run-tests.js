@@ -8,7 +8,7 @@ console.log("🧪 Running complete claude-switch test suite...\n");
 // Test files in order
 const testFiles = [
   { name: "Validation & Error Tests", file: "test-validation-errors.js" },
-  { name: "Ollama Provider Tests", file: "test-ollama-provider.js" },
+  { name: "Provider Integration Tests", file: "test-provider-integration.js" },
   { name: "Comprehensive Integration Tests", file: "test-comprehensive.js" },
 ];
 

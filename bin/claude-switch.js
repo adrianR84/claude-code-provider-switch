@@ -23,14 +23,48 @@ const {
 } = require("../lib/config");
 
 /**
+ * Handle post-configuration actions
+ */
+function handlePostConfiguration(action = "restart") {
+  const { log } = require("../lib/config");
+
+  if (action === "restart") {
+    log("Configuration saved! Restarting application...", "green");
+    log("", "reset");
+
+    // Simulate restart by calling main() again to use defaults
+    setTimeout(() => {
+      main().catch((error) => {
+        const { log } = require("../lib/config");
+        log(`Error: ${error.message}`, "red");
+        process.exit(1);
+      });
+    }, 1000); // Short delay for user to see message
+  } else if (action === "menu") {
+    log("Defaults cleared! Returning to main menu...", "green");
+    log("", "reset");
+
+    // Return to main menu by forcing menu mode
+    setTimeout(() => {
+      main(true).catch((error) => {
+        const { log } = require("../lib/config");
+        log(`Error: ${error.message}`, "red");
+        process.exit(1);
+      });
+    }, 1000);
+  }
+}
+
+/**
  * Main application logic
  */
-async function main() {
-  const args = process.argv.slice(2);
+async function main(forceMenu = false) {
+  const args = forceMenu ? [] : process.argv.slice(2);
 
   // Handle special commands first
   if (args[0] === "set-default") {
     await setupDefaults();
+    handlePostConfiguration("restart");
     return;
   }
 
@@ -45,6 +79,7 @@ async function main() {
     setDefaultModel("");
     const { log } = require("../lib/config");
     log("Defaults cleared!", "green");
+    handlePostConfiguration("menu");
     return;
   }
 
@@ -91,6 +126,7 @@ async function main() {
         return;
       case "set-default":
         await setupDefaults();
+        handlePostConfiguration("restart");
         return;
       case "show-defaults":
         showDefaults();

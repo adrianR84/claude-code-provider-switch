@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node bin/claude-switch.js",
     "dev": "node bin/claude-switch.js",
+    "version": "npm version",
     "link": "npm link",
     "unlink": "npm unlink -g claude-code-provider-switch",
     "test:validation": "node test/test-validation-errors.js",

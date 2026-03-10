@@ -12,7 +12,6 @@
     "install-global": "npm install -g .",
     "link": "npm link",
     "unlink": "npm unlink -g claude-code-provider-switch",
-    "test": "node test/test-validation-errors.js",
     "test:validation": "node test/test-validation-errors.js",
     "test:provider": "node test/test-provider-integration.js",
     "test:comprehensive": "node test/test-comprehensive.js",

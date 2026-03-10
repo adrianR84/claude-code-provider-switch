@@ -22,49 +22,153 @@ const {
   getProviderDefaultModel,
 } = require("../lib/config");
 
+// Global state to prevent infinite recursion and race conditions
+let pendingRestartTimeout = null;
+let recursionDepth = 0;
+const MAX_RECURSION_DEPTH = 3;
+
 /**
- * Handle post-configuration actions
+ * Handle post-configuration actions with recursion protection and timeout management
+ * @param {string} action - Action to perform ('restart' or 'menu')
+ * @param {boolean} isInteractive - Whether this is from an interactive session
  */
-function handlePostConfiguration(action = "restart") {
+function handlePostConfiguration(action = "restart", isInteractive = false) {
+  // Validate parameters
+  if (typeof action !== "string" || !["restart", "menu"].includes(action)) {
+    throw new Error(`Invalid action: ${action}. Must be 'restart' or 'menu'`);
+  }
+
+  if (typeof isInteractive !== "boolean") {
+    throw new Error(`Invalid isInteractive: ${isInteractive}. Must be boolean`);
+  }
+
   const { log } = require("../lib/config");
+
+  // Prevent infinite recursion
+  if (recursionDepth >= MAX_RECURSION_DEPTH) {
+    log(
+      "Maximum configuration changes reached. Please restart manually.",
+      "red",
+    );
+    exitGracefully(1);
+    return;
+  }
+
+  // Cancel any pending timeout to prevent race conditions
+  if (pendingRestartTimeout) {
+    clearTimeout(pendingRestartTimeout);
+    pendingRestartTimeout = null;
+  }
 
   if (action === "restart") {
     log("Configuration saved! Restarting application...", "green");
     log("", "reset");
 
     // Simulate restart by calling main() again to use defaults
-    setTimeout(() => {
-      main().catch((error) => {
-        const { log } = require("../lib/config");
-        log(`Error: ${error.message}`, "red");
-        process.exit(1);
-      });
+    pendingRestartTimeout = setTimeout(() => {
+      recursionDepth++;
+      main()
+        .catch((error) => {
+          recursionDepth = 0; // Reset on error
+          handleError(error, isInteractive);
+        })
+        .finally(() => {
+          // Decrement recursion depth after completion
+          if (recursionDepth > 0) {
+            recursionDepth--;
+          }
+        });
     }, 1000); // Short delay for user to see message
   } else if (action === "menu") {
     log("Defaults cleared! Returning to main menu...", "green");
     log("", "reset");
 
     // Return to main menu by forcing menu mode
-    setTimeout(() => {
-      main(true).catch((error) => {
-        const { log } = require("../lib/config");
-        log(`Error: ${error.message}`, "red");
-        process.exit(1);
-      });
+    pendingRestartTimeout = setTimeout(() => {
+      recursionDepth++;
+      main(true)
+        .catch((error) => {
+          recursionDepth = 0; // Reset on error
+          handleError(error, false); // Menu mode always exits on error
+        })
+        .finally(() => {
+          // Decrement recursion depth after completion
+          if (recursionDepth > 0) {
+            recursionDepth--;
+          }
+        });
     }, 1000);
   }
 }
 
 /**
+ * Standardized error handling
+ * @param {Error} error - The error to handle
+ * @param {boolean} isInteractive - Whether this is from an interactive session
+ */
+function handleError(error, isInteractive = false) {
+  const { log } = require("../lib/config");
+
+  if (error instanceof Error) {
+    log(`Error: ${error.message}`, "red");
+  } else {
+    log(`Error: ${String(error)}`, "red");
+  }
+
+  if (isInteractive) {
+    log("Returning to menu...", "yellow");
+    // Don't increment recursion depth for error recovery
+    main(true).catch((recoveryError) => {
+      log(`Recovery failed: ${recoveryError.message}`, "red");
+      exitGracefully(1);
+    });
+  } else {
+    exitGracefully(1);
+  }
+}
+
+/**
+ * Graceful process exit with cleanup
+ * @param {number} code - Exit code
+ */
+function exitGracefully(code = 0) {
+  // Cancel any pending timeout
+  if (pendingRestartTimeout) {
+    clearTimeout(pendingRestartTimeout);
+    pendingRestartTimeout = null;
+  }
+
+  // Reset recursion depth
+  recursionDepth = 0;
+
+  process.exit(code);
+}
+
+/**
  * Main application logic
+ * @param {boolean} forceMenu - Force menu mode by ignoring command-line arguments
  */
 async function main(forceMenu = false) {
+  // Validate forceMenu parameter
+  if (typeof forceMenu !== "boolean") {
+    throw new Error(`Invalid forceMenu: ${forceMenu}. Must be boolean`);
+  }
+
+  // Proper recursion depth management
+  if (recursionDepth > 0) {
+    // We're in a recursive call, this is expected
+    // Don't modify recursionDepth here - it's managed by handlePostConfiguration
+  } else {
+    // First time starting, ensure recursion depth is 0
+    recursionDepth = 0;
+  }
+
   const args = forceMenu ? [] : process.argv.slice(2);
 
   // Handle special commands first
   if (args[0] === "set-default") {
     await setupDefaults();
-    handlePostConfiguration("restart");
+    handlePostConfiguration("restart", false);
     return;
   }
 
@@ -79,7 +183,7 @@ async function main(forceMenu = false) {
     setDefaultModel("");
     const { log } = require("../lib/config");
     log("Defaults cleared!", "green");
-    handlePostConfiguration("menu");
+    handlePostConfiguration("menu", false);
     return;
   }
 
@@ -126,7 +230,7 @@ async function main(forceMenu = false) {
         return;
       case "set-default":
         await setupDefaults();
-        handlePostConfiguration("restart");
+        handlePostConfiguration("restart", true);
         return;
       case "show-defaults":
         showDefaults();
@@ -214,30 +318,22 @@ async function main(forceMenu = false) {
       break;
 
     default:
-      const { log } = require("../lib/config");
-      log(`Error: Unknown command '${command}'`, "red");
-      log("", "reset");
+      handleError(new Error(`Unknown command '${command}'`), false);
       showUsage();
-      process.exit(1);
+      return;
   }
 }
 
 // Handle uncaught errors
 process.on("uncaughtException", (error) => {
-  const { log } = require("../lib/config");
-  log(`Uncaught error: ${error.message}`, "red");
-  process.exit(1);
+  handleError(error, false);
 });
 
 process.on("unhandledRejection", (reason, promise) => {
-  const { log } = require("../lib/config");
-  log(`Unhandled rejection: ${reason}`, "red");
-  process.exit(1);
+  handleError(new Error(`Unhandled rejection: ${reason}`), false);
 });
 
 // Run the application
 main().catch((error) => {
-  const { log } = require("../lib/config");
-  log(`Error: ${error.message}`, "red");
-  process.exit(1);
+  handleError(error, false);
 });

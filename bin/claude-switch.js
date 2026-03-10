@@ -41,7 +41,7 @@ async function main() {
 
   if (args[0] === "clear-defaults") {
     const { setDefaultProvider, setDefaultModel } = require("../lib/config");
-    setDefaultProvider("original");
+    setDefaultProvider("default");
     setDefaultModel("");
     const { log } = require("../lib/config");
     log("Defaults cleared!", "green");
@@ -50,11 +50,10 @@ async function main() {
 
   if (args.length === 0) {
     // Check for default provider first
-    const envVars = require("../lib/config").loadEnvFile();
-    const defaultProvider = envVars.DEFAULT_PROVIDER;
-    const defaultModel = envVars.DEFAULT_MODEL;
+    const defaultProvider = getDefaultProvider();
+    const defaultModel = getDefaultModel();
 
-    if (defaultProvider) {
+    if (defaultProvider && defaultProvider !== "default") {
       const { log } = require("../lib/config");
       log(
         `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
@@ -167,8 +166,8 @@ async function main() {
       break;
 
     case "original":
-    case "orig":
-    case "o":
+    case "def":
+    case "d":
       await launchDefault(extraArgs);
       break;
 

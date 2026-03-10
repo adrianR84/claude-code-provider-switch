@@ -187,6 +187,20 @@ async function main(forceMenu = false) {
     return;
   }
 
+  // Handle --version flag
+  if (args[0] === "--version" || args[0] === "-v") {
+    try {
+      const packagePath = require.resolve("../package.json");
+      const packageJson = require(packagePath);
+      const { log } = require("../lib/config");
+      log(`claude-code-provider-switch v${packageJson.version}`, "green");
+    } catch (error) {
+      console.error("Error: Could not read version from package.json");
+      process.exit(1);
+    }
+    return;
+  }
+
   if (args.length === 0) {
     // Check for default provider first
     const defaultProvider = getDefaultProvider();

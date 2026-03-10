@@ -53,7 +53,7 @@ async function main() {
     const defaultProvider = getDefaultProvider();
     const defaultModel = getDefaultModel();
 
-    if (defaultProvider && defaultProvider !== "default") {
+    if (defaultProvider) {
       const { log } = require("../lib/config");
       log(
         `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,

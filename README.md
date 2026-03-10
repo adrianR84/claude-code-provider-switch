@@ -14,7 +14,22 @@ A powerful CLI tool that lets you seamlessly switch between different AI provide
 
 ## 📦 Installation
 
-### Global Installation (Recommended)
+### Prerequisites
+
+First, ensure you have [Claude Code](https://docs.anthropic.com/en/docs/claude-code/quickstart) installed.
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+### Global Installation (Method 1)
+
+```bash
+# Install globally
+npm install -g claude-code-provider-switch
+```
+
+### Global Installation (Method 2 - Alternative)
 
 ```bash
 # Clone the repository
@@ -26,13 +41,6 @@ npm install -g .
 
 # Or use npm link for development (changes are immediate)
 npm run link
-```
-
-### Local Installation
-
-```bash
-npm install
-npm start
 ```
 
 ## 🎯 Quick Start

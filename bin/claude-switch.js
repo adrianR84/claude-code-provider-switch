@@ -41,7 +41,7 @@ async function main() {
 
   if (args[0] === "clear-defaults") {
     const { setDefaultProvider, setDefaultModel } = require("../lib/config");
-    setDefaultProvider("default");
+    setDefaultProvider("original");
     setDefaultModel("");
     const { log } = require("../lib/config");
     log("Defaults cleared!", "green");
@@ -75,7 +75,7 @@ async function main() {
         case "ollama":
           await launchOllama(false, [], modelToUse);
           break;
-        case "default":
+        case "original":
           await launchDefault([]);
           break;
       }
@@ -115,7 +115,7 @@ async function main() {
       case "ollama":
         await launchOllama(false, [], selectedModel);
         break;
-      case "default":
+      case "original":
         await launchDefault([]);
         break;
     }
@@ -166,9 +166,9 @@ async function main() {
       await launchOllama(showModelMenuParam, extraArgs, directModel);
       break;
 
-    case "default":
-    case "def":
-    case "d":
+    case "original":
+    case "orig":
+    case "o":
       await launchDefault(extraArgs);
       break;
 

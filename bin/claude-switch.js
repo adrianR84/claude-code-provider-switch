@@ -69,7 +69,7 @@ async function main() {
           await launchOpenRouter(false, [], modelToUse);
           break;
         case "anthropic":
-          await launchAnthropic([], modelToUse);
+          await launchAnthropic(false, [], modelToUse);
           break;
         case "ollama":
           await launchOllama(false, [], modelToUse);
@@ -109,7 +109,7 @@ async function main() {
         await launchOpenRouter(false, [], selectedModel);
         break;
       case "anthropic":
-        await launchAnthropic([], selectedModel);
+        await launchAnthropic(false, [], selectedModel);
         break;
       case "ollama":
         await launchOllama(false, [], selectedModel);
@@ -157,7 +157,7 @@ async function main() {
 
     case "anthropic":
     case "ant":
-      await launchAnthropic(extraArgs);
+      await launchAnthropic(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "ollama":

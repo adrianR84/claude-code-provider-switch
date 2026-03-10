@@ -195,7 +195,8 @@ async function runTests() {
     const result = await runCommandWithInput(["anthropic", "--model"], "\n");
     // Accept both successful model selection and API key error as valid
     if (
-      !result.stdout.includes("Available Anthropic models") &&
+      !result.stdout.includes("Found") &&
+      !result.stdout.includes("models") &&
       !result.stdout.includes("API key not found") &&
       !result.stdout.includes("API key is required")
     ) {

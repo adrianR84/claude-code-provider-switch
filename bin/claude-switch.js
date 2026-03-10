@@ -29,7 +29,7 @@ async function main() {
         await launchAnthropic([]);
         break;
       case "ollama":
-        await launchOllama([]);
+        await launchOllama(showModelMenuParam, []);
         break;
       case "default":
         await launchDefault([]);
@@ -44,6 +44,13 @@ async function main() {
   const command = args[0].toLowerCase();
   const showModelMenuParam = args.includes("--model");
 
+  // Check for direct model specification after --model flag
+  const modelIndex = args.indexOf("--model");
+  let directModel = null;
+  if (modelIndex !== -1 && args.length > modelIndex + 1) {
+    directModel = args[modelIndex + 1];
+  }
+
   // Filter out our script arguments, pass the rest to Claude
   const extraArgs = args.filter(
     (arg) =>
@@ -57,14 +64,15 @@ async function main() {
       arg !== "ant" &&
       arg !== "oll" &&
       arg !== "def" &&
-      arg !== "d",
+      arg !== "d" &&
+      arg !== directModel, // Filter out the direct model name
   );
 
   switch (command) {
     case "openrouter":
     case "or":
     case "open":
-      await launchOpenRouter(showModelMenuParam, extraArgs);
+      await launchOpenRouter(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "anthropic":
@@ -74,7 +82,7 @@ async function main() {
 
     case "ollama":
     case "oll":
-      await launchOllama(extraArgs);
+      await launchOllama(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "default":

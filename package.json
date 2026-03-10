@@ -2,7 +2,7 @@
   "name": "claude-code-provider-switch",
   "version": "1.0.0",
   "description": "Cross-platform Claude Code settings switcher with OpenRouter support",
-  "main": "index.js",
+  "main": "lib/config.js",
   "bin": {
     "claude-switch": "./bin/claude-switch.js"
   },

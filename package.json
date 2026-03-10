@@ -12,7 +12,9 @@
     "install-global": "npm install -g .",
     "link": "npm link",
     "unlink": "npm unlink -g claude-code-provider-switch",
-    "test": "node test/test.js"
+    "test": "node test/test.js",
+    "test:comprehensive": "node test/test-comprehensive.js",
+    "test:all": "node test/run-tests.js"
   },
   "keywords": [
     "claude",

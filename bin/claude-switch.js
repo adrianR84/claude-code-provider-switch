@@ -5,11 +5,21 @@
  * A modular CLI tool to switch between different AI providers for Claude Code
  */
 
-const { showProviderMenu, showUsage } = require("../lib/menu");
+const {
+  showProviderMenu,
+  showUsage,
+  showDefaults,
+  setupDefaults,
+} = require("../lib/menu");
 const { launchOpenRouter } = require("../lib/openrouter");
 const { launchAnthropic } = require("../lib/anthropic");
 const { launchOllama } = require("../lib/ollama");
 const { launchDefault } = require("../lib/default");
+const {
+  getDefaultProvider,
+  getDefaultModel,
+  getProviderDefaultModel,
+} = require("../lib/config");
 
 /**
  * Main application logic
@@ -17,7 +27,60 @@ const { launchDefault } = require("../lib/default");
 async function main() {
   const args = process.argv.slice(2);
 
+  // Handle special commands first
+  if (args[0] === "set-default") {
+    await setupDefaults();
+    return;
+  }
+
+  if (args[0] === "show-defaults") {
+    showDefaults();
+    return;
+  }
+
+  if (args[0] === "clear-defaults") {
+    const { setDefaultProvider, setDefaultModel } = require("../lib/config");
+    setDefaultProvider("default");
+    setDefaultModel("");
+    const { log } = require("../lib/config");
+    log("Defaults cleared!", "green");
+    return;
+  }
+
   if (args.length === 0) {
+    // Check for default provider first
+    const defaultProvider = getDefaultProvider();
+    const defaultModel = getDefaultModel();
+
+    if (defaultProvider && defaultProvider !== "default") {
+      const { log } = require("../lib/config");
+      log(
+        `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
+        "green",
+      );
+
+      // Launch default provider with default model
+      const modelToUse =
+        defaultModel || getProviderDefaultModel(defaultProvider);
+
+      switch (defaultProvider) {
+        case "openrouter":
+          await launchOpenRouter(false, [], modelToUse);
+          break;
+        case "anthropic":
+          await launchAnthropic([], modelToUse);
+          break;
+        case "ollama":
+          await launchOllama(false, [], modelToUse);
+          break;
+        case "default":
+          await launchDefault([]);
+          break;
+      }
+      return;
+    }
+
+    // No defaults set, show interactive menu
     const selectedProvider = await showProviderMenu();
     const showModelMenuParam = false; // Don't show model menu by default
 
@@ -36,6 +99,12 @@ async function main() {
         break;
       case "help":
         showUsage();
+        break;
+      case "set-default":
+        await setupDefaults();
+        break;
+      case "show-defaults":
+        showDefaults();
         break;
     }
     return;

@@ -10,6 +10,7 @@ const {
   showUsage,
   showDefaults,
   setupDefaults,
+  showModelSelectionForProvider,
 } = require("../lib/menu");
 const { launchOpenRouter } = require("../lib/openrouter");
 const { launchAnthropic } = require("../lib/anthropic");
@@ -82,29 +83,39 @@ async function main() {
 
     // No defaults set, show interactive menu
     const selectedProvider = await showProviderMenu();
-    const showModelMenuParam = false; // Don't show model menu by default
 
+    // Handle special menu options
+    switch (selectedProvider.id) {
+      case "help":
+        showUsage();
+        return;
+      case "set-default":
+        await setupDefaults();
+        return;
+      case "show-defaults":
+        showDefaults();
+        return;
+    }
+
+    // For provider selection, show model selection
+    let selectedModel = null;
+    if (selectedProvider.id !== "default") {
+      selectedModel = await showModelSelectionForProvider(selectedProvider);
+    }
+
+    // Launch the selected provider with the selected model
     switch (selectedProvider.id) {
       case "openrouter":
-        await launchOpenRouter(showModelMenuParam, []);
+        await launchOpenRouter(false, [], selectedModel);
         break;
       case "anthropic":
-        await launchAnthropic([]);
+        await launchAnthropic([], selectedModel);
         break;
       case "ollama":
-        await launchOllama(showModelMenuParam, []);
+        await launchOllama(false, [], selectedModel);
         break;
       case "default":
         await launchDefault([]);
-        break;
-      case "help":
-        showUsage();
-        break;
-      case "set-default":
-        await setupDefaults();
-        break;
-      case "show-defaults":
-        showDefaults();
         break;
     }
     return;

@@ -45,6 +45,9 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
+# Cache files
+.cache/
+
 # IDE files
 .vscode/
 .idea/

@@ -50,8 +50,9 @@ async function main() {
 
   if (args.length === 0) {
     // Check for default provider first
-    const defaultProvider = getDefaultProvider();
-    const defaultModel = getDefaultModel();
+    const envVars = require("../lib/config").loadEnvFile();
+    const defaultProvider = envVars.DEFAULT_PROVIDER;
+    const defaultModel = envVars.DEFAULT_MODEL;
 
     if (defaultProvider) {
       const { log } = require("../lib/config");

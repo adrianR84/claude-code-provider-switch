@@ -95,6 +95,7 @@ OLLAMA_MODEL=minimax-m2.5:cloud
 DEFAULT_PROVIDER=original
 DEFAULT_MODEL=
 ```
+
 When you run the CLI for the first time, based on your selection, it will ask for the API keys or Auth Tokens and after this will be saved in the `.env` file for future use.
 
 ### Provider Setup
@@ -117,43 +118,35 @@ When you run the CLI for the first time, based on your selection, it will ask fo
 2. Optional: Set `OLLAMA_AUTH_TOKEN` if using a remote Ollama instance
 3. Run `claude-switch ollama --model` to see locally available models
 
-## 📋 Commands Reference
+## ⚠️ Important: Clearing Default Settings
 
-### Provider Commands
+**If the interactive menu doesn't show and Claude Code opens directly with a predefined provider**, you need to clear the default settings:
 
-| Command      | Description              | Example                    |
-| ------------ | ------------------------ | -------------------------- |
-| `openrouter` | Use OpenRouter provider  | `claude-switch openrouter` |
-| `anthropic`  | Use Anthropic provider   | `claude-switch anthropic`  |
-| `ollama`     | Use Ollama provider      | `claude-switch ollama`     |
-| `original`   | Use original Claude Code | `claude-switch original`   |
+```bash
+claude-switch clear-defaults
+```
 
-### Model Selection
+### Why This Happens
 
-| Command              | Description               | Example                            |
-| -------------------- | ------------------------- | ---------------------------------- |
-| `--model <name>`     | Use specific model        | `claude-switch --model gpt-4`      |
-| `<provider> --model` | Select model for provider | `claude-switch openrouter --model` |
+The application remembers your last provider choice to provide a faster experience. However, if you want to change providers or access the full menu again, you must clear these defaults first.
 
-### Configuration Commands
+### What Clearing Defaults Does
 
-| Command          | Description               | Example                        |
-| ---------------- | ------------------------- | ------------------------------ |
-| `set-default`    | Interactive default setup | `claude-switch set-default`    |
-| `show-defaults`  | View current defaults     | `claude-switch show-defaults`  |
-| `clear-defaults` | Reset all defaults        | `claude-switch clear-defaults` |
-| `help`           | Show help information     | `claude-switch --help`         |
+- Resets the default provider to "original"
+- Clears any saved default model
+- Forces the application to show the interactive menu on next run
+- Does not affect your saved API keys in `.env`
 
-### Aliases
+**Always run `claude-switch clear-defaults` when:**
 
-| Command      | Aliases      |
-| ------------ | ------------ |
-| `openrouter` | `or`, `open` |
-| `anthropic`  | `ant`        |
-| `ollama`     | `oll`        |
-| `original`   | `def`, `d`   |
+- Menu options don't appear on startup
+- You want to try a different provider
+- You want to change your default model
+- The application bypasses the menu
 
-## 🎨 Interactive Menu
+## � Quick Start
+
+### Basic Usage
 
 When you run `claude-switch` without arguments, you'll see an interactive menu:
 
@@ -231,15 +224,9 @@ npm install -g .
 - Check your `.env` file contains the correct API key
 - Ensure the `.env` file is in your current working directory
 
-**"Provider not found" error**
-
-- Verify the provider name is spelled correctly
-- Check you have the required API keys set up
-
-**Menu glitching or not responding**
+**Menu selection not showing options, opens Claude Code directly**
 
 - Try clearing defaults: `claude-switch clear-defaults`
-- Restart the application
 
 **File permission errors**
 

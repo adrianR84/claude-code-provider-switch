@@ -166,8 +166,5 @@ out/
 # Source maps
 *.map
 
-# Local configuration
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# All files starting with dot (catch-all for dotfiles)
+.*

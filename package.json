@@ -24,13 +24,13 @@
   "keywords": [
     "claude",
     "claude-code",
-    "openrouter",
-    "llm switcher",
-    "llm provider switcher",
-    "ai provider switcher",
-    "ai model switcher",
-    "ai model provider switcher",
     "claude code provider switcher",
+    "claude code llm switcher",
+    "claude code llm provider switcher",
+    "ai provider switcher",
+    "claude code ai model switcher",
+    "claude code ai model provider switcher",
+    "claude code OpenRouter Ollama Anthropic",
     "cli"
   ],
   "author": "Adrian R",
@@ -41,7 +41,9 @@
   "files": [
     "bin/",
     "lib/",
-    "README.md"
+    "test/",
+    "README.md",
+    "index.js"
   ],
   "preferGlobal": true
 }

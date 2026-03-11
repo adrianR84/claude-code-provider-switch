@@ -9,7 +9,6 @@
   "scripts": {
     "start": "node bin/claude-switch.js",
     "dev": "node bin/claude-switch.js",
-    "version": "npm version",
     "link": "npm link",
     "unlink": "npm unlink -g claude-code-provider-switch",
     "pub": "npm version patch && npm publish && git push origin main --tags",

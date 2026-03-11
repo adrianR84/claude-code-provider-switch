@@ -72,6 +72,9 @@ claude-switch show-defaults
 
 # Clear all defaults
 claude-switch clear-defaults
+
+# Manage API keys interactively
+claude-switch api-keys
 ```
 
 ## ⚙️ Configuration
@@ -97,6 +100,24 @@ DEFAULT_MODEL=
 ```
 
 When you run the CLI for the first time, based on your selection, it will ask for the API keys or Auth Tokens and after this will be saved in the `.env` file for future use.
+
+### API Key Management
+
+For easier API key management, use the interactive menu:
+
+```bash
+# Launch interactive API key management
+claude-switch api-keys
+```
+
+Or access it through the main menu (option 6) when you run `claude-switch` without arguments.
+
+**Features:**
+
+- 🔐 **Secure**: API keys are masked for display (shows only first 4 and last 4 characters)
+- 🎯 **Visual**: Clear status indicators (✅/❌) show which providers have keys configured
+- ⚡ **Interactive**: Arrow key navigation with visual selection indicators
+- 🔄 **Flexible**: Update, remove, or set new API keys interactively
 
 ### Provider Setup
 
@@ -137,13 +158,14 @@ When you run the CLI for the first time, based on your selection, it will ask fo
 
 ### Configuration Commands
 
-| Command          | Description               | Example                        |
-| ---------------- | ------------------------- | ------------------------------ |
-| `set-default`    | Interactive default setup | `claude-switch set-default`    |
-| `show-defaults`  | View current defaults     | `claude-switch show-defaults`  |
-| `clear-defaults` | Reset all defaults        | `claude-switch clear-defaults` |
-| `help`           | Show help information     | `claude-switch --help`         |
-| `version`        | Show Version information  | `claude-switch --version`      |
+| Command          | Description                   | Example                        |
+| ---------------- | ----------------------------- | ------------------------------ |
+| `set-default`    | Interactive default setup     | `claude-switch set-default`    |
+| `show-defaults`  | View current defaults         | `claude-switch show-defaults`  |
+| `clear-defaults` | Reset all defaults            | `claude-switch clear-defaults` |
+| `api-keys`       | Manage API keys interactively | `claude-switch api-keys`       |
+| `help`           | Show help information         | `claude-switch --help`         |
+| `version`        | Show Version information      | `claude-switch --version`      |
 
 ### Aliases
 
@@ -197,12 +219,13 @@ Available providers:
   3) Anthropic      Aliases: (anthropic, ant)
   4) Original Claude Code  Aliases: (original, orig, def, d)
   5) Set as Default  Aliases: (set-default)
-  6) Help           Aliases: (help, -h, --help)
+  6) Manage API Keys  Aliases: (api-keys, keys)
+  7) Help           Aliases: (help, -h, --help)
 
 Controls:
 ↑/↓ - Navigate
 Enter - Select provider
-1-6 - Quick select
+1-7 - Quick select
 ESC - Exit
 ```
 
@@ -218,6 +241,9 @@ const {
   getDefaultProvider,
   launchOpenRouter,
   launchAnthropic,
+  showApiKeyMenu,
+  updateApiKey,
+  maskApiKey,
 } = require("claude-code-provider-switch");
 
 // Set default provider programmatically
@@ -229,6 +255,15 @@ console.log(`Current provider: ${current}`);
 
 // Launch specific provider
 await launchOpenRouter(false, [], "gpt-4");
+
+// Manage API keys programmatically
+await showApiKeyMenu(); // Show interactive API key menu
+await updateApiKey({
+  id: "openrouter",
+  name: "OpenRouter",
+  envVar: "OPENROUTER_AUTH_TOKEN",
+}); // Update specific API key
+console.log(maskApiKey("sk-1234567890abcdef")); // "sk-1234...cdef"
 ```
 
 ### Development

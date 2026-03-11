@@ -103,20 +103,56 @@ When you run the CLI for the first time, based on your selection, it will ask fo
 #### OpenRouter
 
 1. Get your API key from [OpenRouter](https://openrouter.ai/keys)
-2. Set `OPENROUTER_AUTH_TOKEN` in your `.env` file
+2. Set `OPENROUTER_AUTH_TOKEN` in your `.env` file or through the interactive menu
 3. Run `claude-switch openrouter --model` to browse available models
 
 #### Anthropic
 
 1. Get your API key from [Anthropic Console](https://console.anthropic.com/)
-2. Set `ANTHROPIC_API_KEY` in your `.env` file
+2. Set `ANTHROPIC_API_KEY` in your `.env` file or through the interactive menu
 3. Run `claude-switch anthropic --model` to browse available models
 
 #### Ollama
 
 1. Install and run [Ollama](https://ollama.ai/)
-2. Optional: Set `OLLAMA_AUTH_TOKEN` if using a remote Ollama instance
+2. Optional: Set `OLLAMA_AUTH_TOKEN` in your `.env` file or through the interactive menu if using a remote Ollama instance
 3. Run `claude-switch ollama --model` to see locally available models
+
+## 📋 Commands Reference
+
+### Provider Commands
+
+| Command      | Description              | Example                    |
+| ------------ | ------------------------ | -------------------------- |
+| `openrouter` | Use OpenRouter provider  | `claude-switch openrouter` |
+| `anthropic`  | Use Anthropic provider   | `claude-switch anthropic`  |
+| `ollama`     | Use Ollama provider      | `claude-switch ollama`     |
+| `original`   | Use original Claude Code | `claude-switch original`   |
+
+### Model Selection
+
+| Command              | Description               | Example                            |
+| -------------------- | ------------------------- | ---------------------------------- |
+| `<provider> --model` | Select model for provider | `claude-switch openrouter --model` |
+
+### Configuration Commands
+
+| Command          | Description               | Example                        |
+| ---------------- | ------------------------- | ------------------------------ |
+| `set-default`    | Interactive default setup | `claude-switch set-default`    |
+| `show-defaults`  | View current defaults     | `claude-switch show-defaults`  |
+| `clear-defaults` | Reset all defaults        | `claude-switch clear-defaults` |
+| `help`           | Show help information     | `claude-switch --help`         |
+| `version`        | Show Version information  | `claude-switch --version`      |
+
+### Aliases
+
+| Command      | Aliases                        |
+| ------------ | ------------------------------ |
+| `openrouter` | `or`, `open`                   |
+| `anthropic`  | `ant`                          |
+| `ollama`     | `oll`                          |
+| `original`   | `original`, `orig`, `def`, `d` |
 
 ## ⚠️ Important: Clearing Default Settings
 
@@ -128,13 +164,12 @@ claude-switch clear-defaults
 
 ### Why This Happens
 
-The application remembers your last provider choice to provide a faster experience. However, if you want to change providers or access the full menu again, you must clear these defaults first.
+If you go through the option `set-default`, you are setting a default provider and model and the application remembers your last provider choice to provide a faster experience. However, if you want to change providers or access the full menu again, you must clear these defaults first.
 
 ### What Clearing Defaults Does
 
-- Resets the default provider to "original"
+- Resets the default provider to "default" in `.env` file (which takes you to the interactive menu)
 - Clears any saved default model
-- Forces the application to show the interactive menu on next run
 - Does not affect your saved API keys in `.env`
 
 **Always run `claude-switch clear-defaults` when:**

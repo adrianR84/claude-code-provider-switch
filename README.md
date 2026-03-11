@@ -78,7 +78,7 @@ claude-switch clear-defaults
 
 ### Environment Variables
 
-Create a `.env` file in your project directory:
+The CLI is designed to create a `.env` file in your project directory with this syntax:
 
 ```env
 # API Keys for different providers
@@ -95,6 +95,7 @@ OLLAMA_MODEL=minimax-m2.5:cloud
 DEFAULT_PROVIDER=original
 DEFAULT_MODEL=
 ```
+When you run the CLI for the first time, based on your selection, it will ask for the API keys or Auth Tokens and after this will be saved in the `.env` file for future use.
 
 ### Provider Setup
 

@@ -187,6 +187,12 @@ async function main(forceMenu = false) {
     return;
   }
 
+  if (args[0] === "api-keys") {
+    const { showApiKeyMenu } = require("../lib/config");
+    await showApiKeyMenu();
+    return;
+  }
+
   // Handle --version flag
   if (args[0] === "--version" || args[0] === "-v") {
     try {
@@ -249,6 +255,13 @@ async function main(forceMenu = false) {
       case "show-defaults":
         showDefaults();
         return;
+      case "api-keys":
+        const { showApiKeyMenu } = require("../lib/config");
+        await showApiKeyMenu();
+        // Show menu again after API key management
+        const newSelectedProvider = await showProviderMenu();
+        // Handle the new selection recursively
+        return main(true);
     }
 
     // For provider selection, show model selection

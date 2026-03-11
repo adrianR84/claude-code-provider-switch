@@ -41,8 +41,7 @@
   "files": [
     "bin/",
     "lib/",
-    "README.md",
-    ".env"
+    "README.md"
   ],
   "preferGlobal": true
 }

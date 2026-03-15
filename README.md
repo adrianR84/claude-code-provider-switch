@@ -99,6 +99,8 @@ DEFAULT_PROVIDER=default
 DEFAULT_MODEL=
 ```
 
+**Note**: `DEFAULT_PROVIDER=default` is a fallback value that indicates no explicit default has been set. When this value is present, the interactive menu will be displayed. Set it to a specific provider name (`openrouter`, `anthropic`, `ollama`, `original`) to auto-launch with that provider.
+
 When you run the CLI for the first time, based on your selection, it will ask for the API keys or Auth Tokens and after this will be saved in the `.env` file for future use.
 
 ### API Key Management
@@ -118,6 +120,45 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 - 🎯 **Visual**: Clear status indicators (✅/❌) show which providers have keys configured
 - ⚡ **Interactive**: Arrow key navigation with visual selection indicators
 - 🔄 **Flexible**: Update, remove, or set new API keys interactively
+
+### 🌍 Global vs Local Configuration
+
+The CLI supports two configuration modes to suit different workflows:
+
+#### Global Configuration (Default)
+
+- **Location**: `C:\Users\<username>\.claude\.claude-switch-env` (Windows) or `~/.claude/.claude-switch-env` (macOS/Linux)
+- **Usage**: Available system-wide for all projects
+- **Creation**: Automatically created when you first run the CLI
+- **Priority**: Used when no local `.env` file exists
+
+#### Local Configuration
+
+- **Location**: `.env` file in your project directory
+- **Usage**: Project-specific settings that override global configuration
+- **Creation**: Create manually or use "Save Configuration Locally" from the main menu
+- **Priority**: Takes precedence over global configuration
+
+#### Configuration Display
+
+The main menu shows which configuration source is currently active:
+
+```
+Configuration: Global (C:\Users\adria\.claude\.claude-switch-env)
+Configuration: Local (c:\_Adi\_Work\_testing\claude-code-provider-switch\.env)
+```
+
+#### Switching Between Modes
+
+- **To Local**: Select "Save Configuration Locally" from the main menu (option appears when global config exists)
+- **To Global**: Delete or rename the local `.env` file
+- **Priority**: Local always overrides global when both exist
+
+#### Menu Behavior
+
+- **No defaults set**: Shows interactive menu with all provider options
+- **Defaults set**: Auto-launches with configured provider and model
+- **Fresh install**: Automatically shows menu to guide first-time setup
 
 ### Provider Setup
 

@@ -218,7 +218,7 @@ async function main(forceMenu = false) {
     const defaultProvider = getDefaultProvider();
     const defaultModel = getDefaultModel();
 
-    if (defaultProvider && defaultProvider !== "default") {
+    if (defaultProvider && defaultProvider !== null) {
       const { log } = require("../lib/config");
       log(
         `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,

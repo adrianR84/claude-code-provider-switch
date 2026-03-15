@@ -246,69 +246,70 @@ async function main(forceMenu = false) {
       return;
     }
 
-    // No defaults set, show interactive menu
-    const selectedProvider = await showProviderMenu();
+    // No defaults set, show interactive menu - use loop to prevent recursion issues
+    mainLoop: while (true) {
+      const selectedProvider = await showProviderMenu();
 
-    // Handle special menu options
-    switch (selectedProvider.id) {
-      case "help":
-        showUsage();
-        return;
-      case "set-default":
-        await setupDefaults();
-        handlePostConfiguration("restart", true);
-        return;
-      case "show-defaults":
-        showDefaults();
-        return;
-      case "api-keys":
-        const { showApiKeyMenu } = require("../lib/config");
-        await showApiKeyMenu();
-        // Show menu again after API key management
-        const newSelectedProvider = await showProviderMenu();
-        // Handle the new selection recursively
-        return main(true);
-      case "save-local":
-        const { saveConfigurationLocally, log } = require("../lib/config");
-        await saveConfigurationLocally();
-        // Show menu again after saving locally
-        log("Press Enter to continue...", "cyan");
-        const continueRl = require("readline").createInterface({
-          input: process.stdin,
-          output: process.stdout,
-        });
-        await new Promise((resolve) => {
-          continueRl.question("", () => {
-            continueRl.close();
-            resolve();
+      // Handle special menu options
+      switch (selectedProvider.id) {
+        case "help":
+          showUsage();
+          return;
+        case "set-default":
+          await setupDefaults();
+          handlePostConfiguration("restart", true);
+          return;
+        case "show-defaults":
+          showDefaults();
+          return;
+        case "api-keys":
+          const { showApiKeyMenu } = require("../lib/config");
+          await showApiKeyMenu();
+          // Continue the loop to show menu again
+          continue mainLoop;
+        case "save-local":
+          const { saveConfigurationLocally, log } = require("../lib/config");
+          await saveConfigurationLocally();
+          // Show menu again after saving locally
+          log("Press Enter to continue...", "cyan");
+          const continueRl = require("readline").createInterface({
+            input: process.stdin,
+            output: process.stdout,
           });
-        });
-        // Show menu again to reflect configuration source change
-        return main(true);
-    }
+          await new Promise((resolve) => {
+            continueRl.question("", () => {
+              continueRl.close();
+              resolve();
+            });
+          });
+          // Continue the loop to show menu again
+          continue mainLoop;
+      }
 
-    // For provider selection, show model selection
-    let selectedModel = null;
-    if (selectedProvider.id !== "original") {
-      selectedModel = await showModelSelectionForProvider(selectedProvider);
-    }
+      // For provider selection, show model selection
+      let selectedModel = null;
+      if (selectedProvider.id !== "original") {
+        selectedModel = await showModelSelectionForProvider(selectedProvider);
+      }
 
-    // Launch the selected provider with the selected model
-    switch (selectedProvider.id) {
-      case "openrouter":
-        await launchOpenRouter(false, [], selectedModel);
-        break;
-      case "anthropic":
-        await launchAnthropic(false, [], selectedModel);
-        break;
-      case "ollama":
-        await launchOllama(false, [], selectedModel);
-        break;
-      case "original":
-        await launchDefault([]);
-        break;
+      // Launch the selected provider with the selected model
+      switch (selectedProvider.id) {
+        case "openrouter":
+          await launchOpenRouter(false, [], selectedModel);
+          break;
+        case "anthropic":
+          await launchAnthropic(false, [], selectedModel);
+          break;
+        case "ollama":
+          const modelToUse = selectedModel || getProviderDefaultModel("ollama");
+          await launchOllama(false, [], modelToUse);
+          break;
+        case "original":
+          await launchDefault([]);
+          break;
+      }
+      return;
     }
-    return;
   }
 
   const command = args[0].toLowerCase();

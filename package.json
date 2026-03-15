@@ -21,15 +21,16 @@
     "test:all": "node test/run-tests.js"
   },
   "keywords": [
-    "claude",
     "claude-code",
     "claude code provider switcher",
+    "claude code model switcher",
     "claude code llm switcher",
     "claude code llm provider switcher",
     "ai provider switcher",
     "claude code ai model switcher",
     "claude code ai model provider switcher",
-    "claude code OpenRouter Ollama Anthropic",
+    "claude code OpenRouter",
+    "claude code Ollama",
     "cli"
   ],
   "author": "Adrian R",

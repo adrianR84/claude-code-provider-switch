@@ -187,6 +187,12 @@ async function main(forceMenu = false) {
     return;
   }
 
+  if (args[0] === "save-local" || args[0] === "save-locally") {
+    const { saveConfigurationLocally } = require("../lib/config");
+    await saveConfigurationLocally();
+    return;
+  }
+
   if (args[0] === "api-keys") {
     const { showApiKeyMenu } = require("../lib/config");
     await showApiKeyMenu();
@@ -261,6 +267,23 @@ async function main(forceMenu = false) {
         // Show menu again after API key management
         const newSelectedProvider = await showProviderMenu();
         // Handle the new selection recursively
+        return main(true);
+      case "save-local":
+        const { saveConfigurationLocally, log } = require("../lib/config");
+        await saveConfigurationLocally();
+        // Show menu again after saving locally
+        log("Press Enter to continue...", "cyan");
+        const continueRl = require("readline").createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        await new Promise((resolve) => {
+          continueRl.question("", () => {
+            continueRl.close();
+            resolve();
+          });
+        });
+        // Show menu again to reflect configuration source change
         return main(true);
     }
 

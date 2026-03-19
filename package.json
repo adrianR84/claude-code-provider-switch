@@ -1,6 +1,6 @@
 {
   "name": "claude-code-provider-switch",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Cross-platform Claude Code provider switcher (OpenRouter, Ollama, Anthropic)",
   "main": "index.js",
   "bin": {

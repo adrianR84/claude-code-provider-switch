@@ -213,43 +213,65 @@ async function main(forceMenu = false) {
     return;
   }
 
-  if (args.length === 0) {
-    // Check for default provider first
-    const defaultProvider = getDefaultProvider();
-    const defaultModel = getDefaultModel();
+  // Check for default provider first (but only for non-provider commands)
+  const defaultProvider = getDefaultProvider();
+  const defaultModel = getDefaultModel();
+  const isProviderCommand = [
+    "openrouter",
+    "or",
+    "open",
+    "anthropic",
+    "ant",
+    "ollama",
+    "oll",
+    "original",
+    "def",
+    "d",
+  ].includes(args[0]?.toLowerCase());
 
-    if (
-      defaultProvider &&
-      defaultProvider !== null &&
-      defaultProvider !== "default"
-    ) {
-      const { log } = require("../lib/config");
-      log(
-        `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
-        "green",
-      );
+  if (
+    !isProviderCommand &&
+    defaultProvider &&
+    defaultProvider !== null &&
+    defaultProvider !== "default"
+  ) {
+    const { log } = require("../lib/config");
+    log(
+      `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
+      "green",
+    );
 
-      // Launch default provider with default model
-      const modelToUse =
-        defaultModel || getProviderDefaultModel(defaultProvider);
+    // Extract extra args (filter out our own flags)
+    const extraArgs = args.filter(
+      (arg) =>
+        arg !== "--version" &&
+        arg !== "-v" &&
+        arg !== "--help" &&
+        arg !== "-h" &&
+        arg !== "--model",
+    );
 
-      switch (defaultProvider) {
-        case "openrouter":
-          await launchOpenRouter(false, [], modelToUse);
-          break;
-        case "anthropic":
-          await launchAnthropic(false, [], modelToUse);
-          break;
-        case "ollama":
-          await launchOllama(false, [], modelToUse);
-          break;
-        case "original":
-          await launchDefault([]);
-          break;
-      }
-      return;
+    // Launch default provider with default model and extra args
+    const modelToUse = defaultModel || getProviderDefaultModel(defaultProvider);
+
+    switch (defaultProvider) {
+      case "openrouter":
+        await launchOpenRouter(false, extraArgs, modelToUse);
+        break;
+      case "anthropic":
+        await launchAnthropic(false, extraArgs, modelToUse);
+        break;
+      case "ollama":
+        await launchOllama(false, extraArgs, modelToUse);
+        break;
+      case "original":
+        await launchDefault(extraArgs);
+        break;
     }
+    return;
+  }
 
+  if (args.length === 0) {
     // No defaults set, show interactive menu - use loop to prevent recursion issues
     mainLoop: while (true) {
       const selectedProvider = await showProviderMenu();

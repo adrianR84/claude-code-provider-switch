@@ -215,22 +215,21 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | `ollama`     | `oll`                          |
 | `original`   | `original`, `orig`, `def`, `d` |
 
-### IMPORTANT: Extra Arguments with Default Provider
+### ⚠️ IMPORTANT: Extra Arguments with Default Provider
 
 **When a default provider is set, extra arguments are automatically passed to Claude Code:**
 
 ```bash
 claude-switch --continue           # Continue previous conversation
 claude-switch --resume            # Resume last session
-claude-switch --non-interactive   # Run in non-interactive mode
 claude-switch -p "Explain what this project does"  # Quick prompt without interactive mode
 claude-switch -p "List all providers supported" --output-format json  # Get structured JSON output
 
 ```
 
-**This means you can use Claude Code with your default provider seamlessly after setting a default provider, also passing extra arguments like `--continue`, `--resume`, `--non-interactive`, etc.**
+**This means you can use Claude Code with your default provider seamlessly after setting a default provider, also passing extra arguments like `--continue`, `--resume`, etc.**
 
-### ⚠️ Important:Clearing Defaults
+### ⚠️ Important: Clearing Defaults
 
 **If the interactive menu doesn't show and Claude Code opens directly with a predefined provider**, you need to clear the default settings:
 

@@ -59,12 +59,6 @@ claude-switch original
 
 # Use specific provider with model selection
 claude-switch openrouter --model
-
-# NEW: Use extra arguments with default provider
-claude-switch --help
-claude-switch --version
-claude-switch my-file.js
-claude-switch --help --verbose
 ```
 
 ### Configuration Management
@@ -97,7 +91,7 @@ OLLAMA_AUTH_TOKEN=your_ollama_token_here
 
 # Optional: Default models for each provider
 OPENROUTER_MODEL=openrouter/free
-ANTHROPIC_MODEL=claude-sonnet-4-6
+ANTHROPIC_MODEL=claude-3-5-sonnet-latest
 OLLAMA_MODEL=minimax-m2.5:cloud
 
 # Default provider and model settings
@@ -274,42 +268,7 @@ Enter - Select provider
 ESC - Exit
 ```
 
-## � Enhanced Default Provider Experience
-
-### Pass Extra Arguments to Claude
-
-When you have a default provider configured, you can now seamlessly pass additional arguments and flags directly to Claude Code:
-
-```bash
-# Get help using your default provider
-claude-switch --help
-
-# Check version
-claude-switch --version
-
-# Work with specific files
-claude-switch my-project.js
-claude-switch src/ --recursive
-
-# Use Claude Code flags and options
-claude-switch --help --verbose
-claude-switch --no-cache my-file.js
-```
-
-**What This Fixes:**
-
-- ✅ No more "Unknown command" errors with default providers
-- ✅ Full Claude Code functionality available with defaults
-- ✅ Seamless workflow - set once, use everywhere
-- ✅ Backward compatible with explicit provider commands
-
-**How It Works:**
-
-- When a default provider is set, extra arguments are automatically filtered and passed to Claude
-- Provider-specific commands (like `claude-switch openrouter`) still work as before
-- All your favorite Claude Code features are now accessible with default providers
-
-## � Advanced Usage
+## 🔧 Advanced Usage
 
 ### Programmatic API
 
@@ -416,30 +375,6 @@ MIT License - see LICENSE file for details
 - [Claude Code](https://github.com/anthropics/claude-code) - Official Claude Code repository
 - [OpenRouter](https://openrouter.ai/) - Unified API for AI models
 - [Ollama](https://ollama.ai/) - Local AI model deployment
-
-## 📝 Changelog
-
-### v1.2.1 - March 19, 2026
-
-#### 🚀 Major Enhancement
-
-- **Fixed Extra Arguments with Default Providers**: Resolved critical bug where command-line arguments like `--help`, `--version`, and file paths would cause "Unknown command" errors when a default provider was configured
-
-#### ✨ New Features
-
-- **Seamless Argument Passing**: Extra arguments are now automatically filtered and passed to Claude Code when using default providers
-- **Enhanced Workflow**: Full Claude Code functionality now accessible with configured defaults
-
-#### 🐛 Bug Fixes
-
-- Fixed "Unknown command" error when using `claude-switch --help` with default provider
-- Fixed "Unknown command" error when using `claude-switch --version` with default provider
-- Fixed "Unknown command" error when passing file arguments with default provider
-- Maintained backward compatibility with explicit provider commands
-
-#### 🔄 Updates
-
-- Updated default Anthropic model to `claude-sonnet-4-6`
 
 ## 📞 Support
 

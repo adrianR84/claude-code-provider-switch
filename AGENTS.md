@@ -3,20 +3,16 @@
 ## System Information
 
 ### Operating System
+
 - **OS**: Windows
 - **Version**: Current user environment
 - **Architecture**: Windows-based development environment
 
 ### Terminal Environment
+
 - **Shell**: PowerShell (pwsh)
 - **Working Directory**: Project-specific
 - **Command Execution**: Uses bash tool with PowerShell compatibility
-
-### Project Details
-- **Project Path**: `c:\_Adi\_Work\Apps\claude-code-provider-switch`
-- **Project Type**: Node.js CLI application
-- **Git Repository**: Yes (git root: c:\_Adi\_Work\Apps\claude-code-provider-switch)
-- **Package Manager**: npm
 
 ## Agent Instructions
 
@@ -25,6 +21,7 @@
 **Never commit code without the user explicitly requesting this.**
 
 This rule must be followed at all times:
+
 - Do not commit code that is not working, tested, reviewed, and documented
 - Do not commit without user consent (user must specify when they want to commit)
 - Always wait for explicit user request before committing any changes
@@ -46,4 +43,3 @@ When working on this project:
 - Configuration files: `.env` (local) and `~/.claude/.claude-switch-env` (global)
 - Test files located in: `test/` directory
 - Library modules located in: `lib/` directory
-

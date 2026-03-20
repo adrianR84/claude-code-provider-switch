@@ -67,7 +67,7 @@ function handlePostConfiguration(action = "restart", isInteractive = false) {
     // Simulate restart by calling main() again to use defaults
     pendingRestartTimeout = setTimeout(() => {
       recursionDepth++;
-      main()
+      main(true) // Pass forceMenu=true to ignore original arguments and use default provider
         .catch((error) => {
           recursionDepth = 0; // Reset on error
           handleError(error, isInteractive);
@@ -395,6 +395,37 @@ async function main(forceMenu = false) {
       break;
 
     default:
+      // If no default provider is set, ignore unknown arguments and show menu
+      if (
+        !defaultProvider ||
+        defaultProvider === null ||
+        defaultProvider === "default"
+      ) {
+        const { log } = require("../lib/config");
+        log(
+          `Ignoring unknown argument '${command}'. Showing menu...`,
+          "yellow",
+        );
+        log("", "reset");
+
+        // Restart with no arguments to show menu
+        setTimeout(() => {
+          recursionDepth++;
+          main(true) // Force menu mode
+            .catch((error) => {
+              recursionDepth = 0;
+              handleError(error, false);
+            })
+            .finally(() => {
+              if (recursionDepth > 0) {
+                recursionDepth--;
+              }
+            });
+        }, 1000);
+        return;
+      }
+
+      // If default provider is set, show error for truly unknown commands
       handleError(new Error(`Unknown command '${command}'`), false);
       showUsage();
       return;

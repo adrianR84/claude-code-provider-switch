@@ -142,19 +142,42 @@ async function showInteractiveMenu() {
       case "show-defaults":
         showDefaults();
         return;
+      case "clear-defaults":
+        const {
+          setDefaultProvider,
+          setDefaultModel,
+          getDefaultProvider,
+          getDefaultModel,
+        } = require("../lib/config");
+
+        setDefaultProvider("default");
+        setDefaultModel("");
+
+        log("Press Enter to continue...", "cyan");
+        const clearRl = require("readline").createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        await new Promise((resolve) => {
+          clearRl.question("", () => {
+            clearRl.close();
+            resolve();
+          });
+        });
+        continue;
       case "api-keys":
         await showApiKeyMenu();
         continue;
       case "save-local":
         await saveConfigurationLocally();
         log("Press Enter to continue...", "cyan");
-        const continueRl = require("readline").createInterface({
+        const saveRl = require("readline").createInterface({
           input: process.stdin,
           output: process.stdout,
         });
         await new Promise((resolve) => {
-          continueRl.question("", () => {
-            continueRl.close();
+          saveRl.question("", () => {
+            saveRl.close();
             resolve();
           });
         });

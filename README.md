@@ -51,19 +51,19 @@ npm run link
 # Show interactive menu
 claude-switch ui
 
-# Use a specific provider
-claude-switch openrouter
-claude-switch anthropic
-claude-switch ollama
-claude-switch original
+# Use a specific provider (uses default model from settings)
+claude-switch openrouter      # Uses OpenRouter default model
+claude-switch anthropic       # Uses Anthropic default model
+claude-switch ollama          # Uses Ollama default model
+claude-switch original         # Uses original Claude Code
 
 # Use specific provider with model selection
 claude-switch openrouter --model
 
-# Use default provider (if configured)
+# Use default provider (if default provider and model is set)
 claude-switch
 
-# Show help (if no defaults configured)
+# Show help (if NO default provider and model is set)
 claude-switch
 ```
 
@@ -142,7 +142,7 @@ Configuration: Local (current_folder/.env)
 - **No defaults set**: Running `claude-switch` shows help message (use `claude-switch ui` for menu)
 - **Defaults set**: Running `claude-switch` auto-launches with configured provider
 - **Fresh install**: Always shows help message until you set defaults
-- **After clear-defaults**: Running `claude-switch` shows menu until you set new defaults
+- **After clear-defaults**: Running `claude-switch` shows help message (use `claude-switch ui` for menu)
 
 #### Accessing Interactive Menu
 
@@ -159,8 +159,8 @@ claude-switch ui
 # Clear defaults to reset configuration
 claude-switch clear-defaults
 
-# After clearing defaults, running without arguments shows menu
-claude-switch  # Now shows menu (only after clear-defaults)
+# After clearing defaults, running without arguments shows help (use ui for menu)
+claude-switch  # Shows help message
 ```
 
 #### Switching Between Modes
@@ -271,20 +271,7 @@ claude-switch clear-defaults
 
 ### Why This Happens
 
-When you use the "Set as Default" option, the application saves your provider and model choices to provide a faster experience. However, if you want to change providers or access the full menu again, you must clear these defaults first.
-
-### What Clearing Defaults Does
-
-- Resets the default provider to "default" in `.env` file (which takes you to the interactive menu)
-- Clears any saved default model
-- Does not affect your saved API keys in `.env`
-
-**Always run `claude-switch clear-defaults` when:**
-
-- Menu options don't appear on startup
-- You want to try a different provider
-- You want to change your default model
-- The application bypasses the menu
+When you use the "Set as Default" option, the application saves your provider and model choices to provide a faster experience. 
 
 ## � Quick Start
 
@@ -306,12 +293,13 @@ Available providers:
   5) Set as Default  Aliases: (set-default)
   6) Manage API Keys  Aliases: (api-keys, keys)
   7) Save Configuration Locally  Aliases: (save-local, local)
-  8) Help           Aliases: (help, -h, --help)
+  8) Delete Defaults  Aliases: (clear-defaults)
+  9) Help           Aliases: (help, -h, --help)
 
 Controls:
 ↑/↓ - Navigate
 Enter - Select provider
-1-8 - Quick select
+1-9 - Quick select
 ESC - Exit
 ```
 

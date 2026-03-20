@@ -165,114 +165,9 @@ async function main(forceMenu = false) {
 
   const args = forceMenu ? [] : process.argv.slice(2);
 
-  // Handle special commands first
-  if (args[0] === "set-default") {
-    await setupDefaults();
-    handlePostConfiguration("restart", false);
-    return;
-  }
-
-  if (args[0] === "show-defaults") {
-    showDefaults();
-    return;
-  }
-
-  if (args[0] === "clear-defaults") {
-    const { setDefaultProvider, setDefaultModel } = require("../lib/config");
-    setDefaultProvider("default");
-    setDefaultModel("");
-    const { log } = require("../lib/config");
-    log("Defaults cleared!", "green");
-    handlePostConfiguration("menu", false);
-    return;
-  }
-
-  if (args[0] === "save-local" || args[0] === "save-locally") {
-    const { saveConfigurationLocally } = require("../lib/config");
-    await saveConfigurationLocally();
-    return;
-  }
-
-  if (args[0] === "api-keys") {
-    const { showApiKeyMenu } = require("../lib/config");
-    await showApiKeyMenu();
-    return;
-  }
-
-  // Handle --version flag
-  if (args[0] === "--version" || args[0] === "-v") {
-    try {
-      const packagePath = require.resolve("../package.json");
-      const packageJson = require(packagePath);
-      const { log } = require("../lib/config");
-      log(`claude-code-provider-switch v${packageJson.version}`, "green");
-    } catch (error) {
-      console.error("Error: Could not read version from package.json");
-      process.exit(1);
-    }
-    return;
-  }
-
-  // Check for default provider first (but only for non-provider commands)
-  const defaultProvider = getDefaultProvider();
-  const defaultModel = getDefaultModel();
-  const isProviderCommand = [
-    "openrouter",
-    "or",
-    "open",
-    "anthropic",
-    "ant",
-    "ollama",
-    "oll",
-    "original",
-    "def",
-    "d",
-  ].includes(args[0]?.toLowerCase());
-
-  if (
-    !isProviderCommand &&
-    defaultProvider &&
-    defaultProvider !== null &&
-    defaultProvider !== "default"
-  ) {
-    const { log } = require("../lib/config");
-    log(
-      `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
-      "green",
-    );
-
-    // Extract extra args (filter out our own flags)
-    const extraArgs = args.filter(
-      (arg) =>
-        arg !== "--version" &&
-        arg !== "-v" &&
-        arg !== "--help" &&
-        arg !== "-h" &&
-        arg !== "--model",
-    );
-
-    // Launch default provider with default model and extra args
-    const modelToUse = defaultModel || getProviderDefaultModel(defaultProvider);
-
-    switch (defaultProvider) {
-      case "openrouter":
-        await launchOpenRouter(false, extraArgs, modelToUse);
-        break;
-      case "anthropic":
-        await launchAnthropic(false, extraArgs, modelToUse);
-        break;
-      case "ollama":
-        await launchOllama(false, extraArgs, modelToUse);
-        break;
-      case "original":
-        await launchDefault(extraArgs);
-        break;
-    }
-    return;
-  }
-
-  if (args.length === 0) {
-    // No defaults set, show interactive menu - use loop to prevent recursion issues
+  // Handle UI argument first (before any other logic)
+  if (args[0] === "ui") {
+    // Show interactive menu - use loop to prevent recursion issues
     mainLoop: while (true) {
       const selectedProvider = await showProviderMenu();
 
@@ -338,6 +233,97 @@ async function main(forceMenu = false) {
     }
   }
 
+  // Handle special commands next
+  if (args[0] === "set-default") {
+    await setupDefaults();
+    handlePostConfiguration("restart", false);
+    return;
+  }
+
+  if (args[0] === "show-defaults") {
+    showDefaults();
+    return;
+  }
+
+  if (args[0] === "clear-defaults") {
+    const { setDefaultProvider, setDefaultModel } = require("../lib/config");
+    setDefaultProvider("default");
+    setDefaultModel("");
+    const { log } = require("../lib/config");
+    log("Defaults cleared!", "green");
+    handlePostConfiguration("menu", false);
+    return;
+  }
+
+  if (args[0] === "save-local" || args[0] === "save-locally") {
+    const { saveConfigurationLocally } = require("../lib/config");
+    await saveConfigurationLocally();
+    return;
+  }
+
+  if (args[0] === "api-keys") {
+    const { showApiKeyMenu } = require("../lib/config");
+    await showApiKeyMenu();
+    return;
+  }
+
+  // Handle --version flag
+  if (args[0] === "--version" || args[0] === "-v") {
+    try {
+      const packagePath = require.resolve("../package.json");
+      const packageJson = require(packagePath);
+      const { log } = require("../lib/config");
+      log(`claude-code-provider-switch v${packageJson.version}`, "green");
+    } catch (error) {
+      console.error("Error: Could not read version from package.json");
+      process.exit(1);
+    }
+    return;
+  }
+
+  if (args.length === 0) {
+    // No arguments provided - check if default provider is set
+    const defaultProvider = getDefaultProvider();
+    const defaultModel = getDefaultModel();
+
+    if (
+      defaultProvider &&
+      defaultProvider !== null &&
+      defaultProvider !== "default"
+    ) {
+      // Default provider set - launch Claude Code directly
+      const { log } = require("../lib/config");
+      log(
+        `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
+        "green",
+      );
+
+      // Launch default provider with default model and no extra args
+      const modelToUse =
+        defaultModel || getProviderDefaultModel(defaultProvider);
+
+      switch (defaultProvider) {
+        case "openrouter":
+          await launchOpenRouter(false, [], modelToUse);
+          break;
+        case "anthropic":
+          await launchAnthropic(false, [], modelToUse);
+          break;
+        case "ollama":
+          await launchOllama(false, [], modelToUse);
+          break;
+        case "original":
+          await launchDefault([]);
+          break;
+      }
+      return;
+    } else {
+      // No default provider set - show usage/help
+      showUsage();
+      return;
+    }
+  }
+
   const command = args[0].toLowerCase();
   const showModelMenuParam = args.includes("--model");
 
@@ -346,6 +332,68 @@ async function main(forceMenu = false) {
   let directModel = null;
   if (modelIndex !== -1 && args.length > modelIndex + 1) {
     directModel = args[modelIndex + 1];
+  }
+
+  // Check for default provider first (but only for non-provider commands and non-help commands)
+  const defaultProvider = getDefaultProvider();
+  const defaultModel = getDefaultModel();
+  const isProviderCommand = [
+    "openrouter",
+    "or",
+    "open",
+    "anthropic",
+    "ant",
+    "ollama",
+    "oll",
+    "original",
+    "def",
+    "d",
+  ].includes(command);
+  const isHelpCommand = ["help", "--help", "-h"].includes(command);
+  const isUiCommand = command === "ui";
+
+  if (
+    !isProviderCommand &&
+    !isHelpCommand &&
+    !isUiCommand &&
+    defaultProvider &&
+    defaultProvider !== null &&
+    defaultProvider !== "default"
+  ) {
+    const { log } = require("../lib/config");
+    log(
+      `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
+      "green",
+    );
+
+    // Extract extra args (filter out our own flags)
+    const extraArgs = args.filter(
+      (arg) =>
+        arg !== "--version" &&
+        arg !== "-v" &&
+        arg !== "--help" &&
+        arg !== "-h" &&
+        arg !== "--model",
+    );
+
+    // Launch default provider with default model and extra args
+    const modelToUse = defaultModel || getProviderDefaultModel(defaultProvider);
+
+    switch (defaultProvider) {
+      case "openrouter":
+        await launchOpenRouter(false, extraArgs, modelToUse);
+        break;
+      case "anthropic":
+        await launchAnthropic(false, extraArgs, modelToUse);
+        break;
+      case "ollama":
+        await launchOllama(false, extraArgs, modelToUse);
+        break;
+      case "original":
+        await launchDefault(extraArgs);
+        break;
+    }
+    return;
   }
 
   // Filter out our script arguments, pass the rest to Claude
@@ -395,33 +443,16 @@ async function main(forceMenu = false) {
       break;
 
     default:
-      // If no default provider is set, ignore unknown arguments and show menu
+      // If no default provider is set, ignore unknown arguments and show help
       if (
         !defaultProvider ||
         defaultProvider === null ||
         defaultProvider === "default"
       ) {
         const { log } = require("../lib/config");
-        log(
-          `Ignoring unknown argument '${command}'. Showing menu...`,
-          "yellow",
-        );
+        log(`Unknown command '${command}'. Showing help...`, "yellow");
         log("", "reset");
-
-        // Restart with no arguments to show menu
-        setTimeout(() => {
-          recursionDepth++;
-          main(true) // Force menu mode
-            .catch((error) => {
-              recursionDepth = 0;
-              handleError(error, false);
-            })
-            .finally(() => {
-              if (recursionDepth > 0) {
-                recursionDepth--;
-              }
-            });
-        }, 1000);
+        showUsage();
         return;
       }
 

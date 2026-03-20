@@ -15,6 +15,7 @@ const {
 const { launchOpenRouter } = require("../lib/openrouter");
 const { launchAnthropic } = require("../lib/anthropic");
 const { launchOllama } = require("../lib/ollama");
+const { launchMinimax } = require("../lib/minimax");
 const { launchDefault } = require("../lib/default");
 const {
   getDefaultProvider,
@@ -215,9 +216,14 @@ async function showInteractiveMenu() {
       case "anthropic":
         await launchAnthropic(false, [], selectedModel);
         break;
+      case "minimax":
+        const minimaxModel =
+          selectedModel || getProviderDefaultModel("minimax");
+        await launchMinimax(false, [], minimaxModel);
+        break;
       case "ollama":
-        const modelToUse = selectedModel || getProviderDefaultModel("ollama");
-        await launchOllama(false, [], modelToUse);
+        const ollamaModel = selectedModel || getProviderDefaultModel("ollama");
+        await launchOllama(false, [], ollamaModel);
         break;
       case "original":
         await launchDefault([]);
@@ -254,6 +260,9 @@ async function handleCliMode(args) {
         break;
       case "anthropic":
         await launchAnthropic(false, args, modelToUse);
+        break;
+      case "minimax":
+        await launchMinimax(false, args, modelToUse);
         break;
       case "ollama":
         await launchOllama(false, args, modelToUse);
@@ -398,6 +407,9 @@ async function main(forceMenu = false, isRestart = false) {
       case "anthropic":
         await launchAnthropic(false, extraArgs, modelToUse);
         break;
+      case "minimax":
+        await launchMinimax(false, extraArgs, modelToUse);
+        break;
       case "ollama":
         await launchOllama(false, extraArgs, modelToUse);
         break;
@@ -430,11 +442,14 @@ async function main(forceMenu = false, isRestart = false) {
       arg !== "--model" &&
       arg !== "openrouter" &&
       arg !== "anthropic" &&
+      arg !== "minimax" &&
       arg !== "ollama" &&
       arg !== "default" &&
       arg !== "or" &&
       arg !== "open" &&
       arg !== "ant" &&
+      arg !== "min" &&
+      arg !== "mm" &&
       arg !== "oll" &&
       arg !== "def" &&
       arg !== "d" &&
@@ -451,6 +466,12 @@ async function main(forceMenu = false, isRestart = false) {
     case "anthropic":
     case "ant":
       await launchAnthropic(showModelMenuParam, extraArgs, directModel);
+      break;
+
+    case "minimax":
+    case "min":
+    case "mm":
+      await launchMinimax(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "ollama":

@@ -48,8 +48,9 @@ npm run link
 ### Basic Usage
 
 ```bash
-# Show interactive menu
-claude-switch
+
+# Show interactive menu (explicit UI command)
+claude-switch ui
 
 # Use a specific provider
 claude-switch openrouter
@@ -75,6 +76,9 @@ claude-switch clear-defaults
 
 # Manage API keys interactively
 claude-switch api-keys
+
+# Save configuration locally
+claude-switch save-local
 ```
 
 ## ⚙️ Configuration
@@ -133,6 +137,22 @@ Configuration: Local (current_folder/.env)
 - **No defaults set**: Shows interactive menu for provider selection
 - **Defaults set**: Auto-launches with configured provider
 - **Fresh install**: Always shows menu until you set defaults
+
+#### Accessing Interactive Menu
+
+You can access the interactive menu in multiple ways:
+
+```bash
+# Implicit menu (no arguments)
+claude-switch
+
+# Explicit UI command
+claude-switch ui
+
+# Clear defaults to force menu
+claude-switch clear-defaults
+claude-switch  # Now shows menu
+```
 
 #### Switching Between Modes
 
@@ -199,10 +219,12 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 
 | Command          | Description                   | Example                        |
 | ---------------- | ----------------------------- | ------------------------------ |
+| `ui`             | Show interactive menu         | `claude-switch ui`             |
 | `set-default`    | Interactive default setup     | `claude-switch set-default`    |
 | `show-defaults`  | View current defaults         | `claude-switch show-defaults`  |
 | `clear-defaults` | Reset all defaults            | `claude-switch clear-defaults` |
 | `api-keys`       | Manage API keys interactively | `claude-switch api-keys`       |
+| `save-local`     | Save config to local .env     | `claude-switch save-local`     |
 | `help`           | Show help information         | `claude-switch --help`         |
 | `version`        | Show Version information      | `claude-switch --version`      |
 
@@ -210,6 +232,7 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 
 | Command      | Aliases                        |
 | ------------ | ------------------------------ |
+| `ui`         | `ui`                           |
 | `openrouter` | `or`, `open`                   |
 | `anthropic`  | `ant`                          |
 | `ollama`     | `oll`                          |
@@ -273,13 +296,24 @@ Available providers:
   4) Original Claude Code  Aliases: (original, orig, def, d)
   5) Set as Default  Aliases: (set-default)
   6) Manage API Keys  Aliases: (api-keys, keys)
-  7) Help           Aliases: (help, -h, --help)
+  7) Save Configuration Locally  Aliases: (save-local, local)
+  8) Help           Aliases: (help, -h, --help)
 
 Controls:
 ↑/↓ - Navigate
 Enter - Select provider
-1-7 - Quick select
+1-8 - Quick select
 ESC - Exit
+```
+
+**Alternative UI Commands:**
+
+```bash
+# Show interactive menu
+claude-switch
+
+# Show interactive menu (explicit)
+claude-switch ui
 ```
 
 ## 🔧 Advanced Usage

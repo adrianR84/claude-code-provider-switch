@@ -67,7 +67,7 @@ function handlePostConfiguration(action = "restart", isInteractive = false) {
     // Simulate restart by calling main() again to use defaults
     pendingRestartTimeout = setTimeout(() => {
       recursionDepth++;
-      main()
+      main(true)
         .catch((error) => {
           recursionDepth = 0; // Reset on error
           handleError(error, isInteractive);

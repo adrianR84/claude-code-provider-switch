@@ -64,10 +64,10 @@ function handlePostConfiguration(action = "restart", isInteractive = false) {
     log("Configuration saved! Restarting application...", "green");
     log("", "reset");
 
-    // Simulate restart by calling main() again to use defaults
+    // Simulate restart by calling main() with no arguments to use defaults in CLI mode
     pendingRestartTimeout = setTimeout(() => {
       recursionDepth++;
-      main(true)
+      main(true, true) // Force menu mode to clear args, but mark as restart for CLI mode
         .catch((error) => {
           recursionDepth = 0; // Reset on error
           handleError(error, isInteractive);
@@ -83,10 +83,10 @@ function handlePostConfiguration(action = "restart", isInteractive = false) {
     log("Defaults cleared! Returning to main menu...", "green");
     log("", "reset");
 
-    // Return to main menu by forcing menu mode
+    // Return to main menu by forcing UI mode
     pendingRestartTimeout = setTimeout(() => {
       recursionDepth++;
-      main(true)
+      main(true, false) // Force menu mode and mark as not restart (show UI)
         .catch((error) => {
           recursionDepth = 0; // Reset on error
           handleError(error, false); // Menu mode always exits on error
@@ -118,7 +118,7 @@ function handleError(error, isInteractive = false) {
   if (isInteractive) {
     log("Returning to menu...", "yellow");
     // Don't increment recursion depth for error recovery
-    main(true).catch((recoveryError) => {
+    main(true, false).catch((recoveryError) => {
       log(`Recovery failed: ${recoveryError.message}`, "red");
       exitGracefully(1);
     });
@@ -145,10 +145,135 @@ function exitGracefully(code = 0) {
 }
 
 /**
+ * Show interactive menu (UI mode)
+ */
+async function showInteractiveMenu() {
+  // Import config functions once at the top
+  const {
+    setDefaultProvider,
+    setDefaultModel,
+    log,
+    showApiKeyMenu,
+    saveConfigurationLocally,
+  } = require("../lib/config");
+
+  // Show interactive menu loop
+  mainLoop: while (true) {
+    const selectedProvider = await showProviderMenu();
+
+    // Handle special menu options
+    switch (selectedProvider.id) {
+      case "help":
+        showUsage();
+        return;
+      case "set-default":
+        await setupDefaults();
+        handlePostConfiguration("restart", true);
+        return;
+      case "show-defaults":
+        showDefaults();
+        return;
+      case "clear-defaults":
+        setDefaultProvider("default");
+        setDefaultModel("");
+        log("Defaults cleared!", "green");
+        handlePostConfiguration("menu", true);
+        return;
+      case "api-keys":
+        await showApiKeyMenu();
+        // Continue the loop to show menu again
+        continue mainLoop;
+      case "save-local":
+        await saveConfigurationLocally();
+        // Show menu again after saving locally
+        log("Press Enter to continue...", "cyan");
+        const continueRl = require("readline").createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        await new Promise((resolve) => {
+          continueRl.question("", () => {
+            continueRl.close();
+            resolve();
+          });
+        });
+        // Continue the loop to show menu again
+        continue mainLoop;
+    }
+
+    // For provider selection, show model selection
+    let selectedModel = null;
+    if (selectedProvider.id !== "original") {
+      selectedModel = await showModelSelectionForProvider(selectedProvider);
+    }
+
+    // Launch the selected provider with the selected model
+    switch (selectedProvider.id) {
+      case "openrouter":
+        await launchOpenRouter(false, [], selectedModel);
+        break;
+      case "anthropic":
+        await launchAnthropic(false, [], selectedModel);
+        break;
+      case "ollama":
+        const modelToUse = selectedModel || getProviderDefaultModel("ollama");
+        await launchOllama(false, [], modelToUse);
+        break;
+      case "original":
+        await launchDefault([]);
+        break;
+    }
+    return;
+  }
+}
+
+/**
+ * Handle CLI mode - use defaults or show help
+ */
+async function handleCliMode(args) {
+  const defaultProvider = getDefaultProvider();
+  const defaultModel = getDefaultModel();
+
+  if (
+    defaultProvider &&
+    defaultProvider !== null &&
+    defaultProvider !== "default"
+  ) {
+    const { log } = require("../lib/config");
+    log(
+      `Using default: ${defaultProvider}${defaultModel ? ` (${defaultModel})` : ""}`,
+      "green",
+    );
+
+    // Launch default provider with default model and extra args
+    const modelToUse = defaultModel || getProviderDefaultModel(defaultProvider);
+
+    switch (defaultProvider) {
+      case "openrouter":
+        await launchOpenRouter(false, args, modelToUse);
+        break;
+      case "anthropic":
+        await launchAnthropic(false, args, modelToUse);
+        break;
+      case "ollama":
+        await launchOllama(false, args, modelToUse);
+        break;
+      case "original":
+        await launchDefault(args);
+        break;
+    }
+  } else {
+    // No defaults set, show usage help
+    showUsage();
+  }
+}
+
+/**
  * Main application logic
  * @param {boolean} forceMenu - Force menu mode by ignoring command-line arguments
+ * @param {boolean} isRestart - True if this is a restart call (should use CLI mode)
  */
-async function main(forceMenu = false) {
+async function main(forceMenu = false, isRestart = false) {
   // Validate forceMenu parameter
   if (typeof forceMenu !== "boolean") {
     throw new Error(`Invalid forceMenu: ${forceMenu}. Must be boolean`);
@@ -164,6 +289,12 @@ async function main(forceMenu = false) {
   }
 
   const args = forceMenu ? [] : process.argv.slice(2);
+
+  // Handle UI mode - show interactive menu (only if not a restart)
+  if (args[0] === "ui" || (forceMenu && !isRestart)) {
+    await showInteractiveMenu();
+    return;
+  }
 
   // Handle special commands first
   if (args[0] === "set-default") {
@@ -210,6 +341,12 @@ async function main(forceMenu = false) {
       console.error("Error: Could not read version from package.json");
       process.exit(1);
     }
+    return;
+  }
+
+  // Handle help commands before checking defaults
+  if (args[0] === "help" || args[0] === "-h" || args[0] === "--help") {
+    showUsage();
     return;
   }
 
@@ -272,70 +409,9 @@ async function main(forceMenu = false) {
   }
 
   if (args.length === 0) {
-    // No defaults set, show interactive menu - use loop to prevent recursion issues
-    mainLoop: while (true) {
-      const selectedProvider = await showProviderMenu();
-
-      // Handle special menu options
-      switch (selectedProvider.id) {
-        case "help":
-          showUsage();
-          return;
-        case "set-default":
-          await setupDefaults();
-          handlePostConfiguration("restart", true);
-          return;
-        case "show-defaults":
-          showDefaults();
-          return;
-        case "api-keys":
-          const { showApiKeyMenu } = require("../lib/config");
-          await showApiKeyMenu();
-          // Continue the loop to show menu again
-          continue mainLoop;
-        case "save-local":
-          const { saveConfigurationLocally, log } = require("../lib/config");
-          await saveConfigurationLocally();
-          // Show menu again after saving locally
-          log("Press Enter to continue...", "cyan");
-          const continueRl = require("readline").createInterface({
-            input: process.stdin,
-            output: process.stdout,
-          });
-          await new Promise((resolve) => {
-            continueRl.question("", () => {
-              continueRl.close();
-              resolve();
-            });
-          });
-          // Continue the loop to show menu again
-          continue mainLoop;
-      }
-
-      // For provider selection, show model selection
-      let selectedModel = null;
-      if (selectedProvider.id !== "original") {
-        selectedModel = await showModelSelectionForProvider(selectedProvider);
-      }
-
-      // Launch the selected provider with the selected model
-      switch (selectedProvider.id) {
-        case "openrouter":
-          await launchOpenRouter(false, [], selectedModel);
-          break;
-        case "anthropic":
-          await launchAnthropic(false, [], selectedModel);
-          break;
-        case "ollama":
-          const modelToUse = selectedModel || getProviderDefaultModel("ollama");
-          await launchOllama(false, [], modelToUse);
-          break;
-        case "original":
-          await launchDefault([]);
-          break;
-      }
-      return;
-    }
+    // No arguments - use defaults or show help in CLI mode
+    await handleCliMode([]);
+    return;
   }
 
   const command = args[0].toLowerCase();
@@ -388,12 +464,6 @@ async function main(forceMenu = false) {
       await launchDefault(extraArgs);
       break;
 
-    case "help":
-    case "-h":
-    case "--help":
-      showUsage();
-      break;
-
     default:
       handleError(new Error(`Unknown command '${command}'`), false);
       showUsage();
@@ -411,6 +481,6 @@ process.on("unhandledRejection", (reason, promise) => {
 });
 
 // Run the application
-main().catch((error) => {
+main(false, false).catch((error) => {
   handleError(error, false);
 });

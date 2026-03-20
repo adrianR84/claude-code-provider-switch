@@ -48,8 +48,7 @@ npm run link
 ### Basic Usage
 
 ```bash
-
-# Show interactive menu (explicit UI command)
+# Show interactive menu
 claude-switch ui
 
 # Use a specific provider
@@ -60,6 +59,12 @@ claude-switch original
 
 # Use specific provider with model selection
 claude-switch openrouter --model
+
+# Use default provider (if configured)
+claude-switch
+
+# Show help (if no defaults configured)
+claude-switch
 ```
 
 ### Configuration Management
@@ -134,24 +139,28 @@ Configuration: Local (current_folder/.env)
 
 #### Menu Behavior
 
-- **No defaults set**: Shows interactive menu for provider selection
-- **Defaults set**: Auto-launches with configured provider
-- **Fresh install**: Always shows menu until you set defaults
+- **No defaults set**: Running `claude-switch` shows help message (use `claude-switch ui` for menu)
+- **Defaults set**: Running `claude-switch` auto-launches with configured provider
+- **Fresh install**: Always shows help message until you set defaults
+- **After clear-defaults**: Running `claude-switch` shows menu until you set new defaults
 
 #### Accessing Interactive Menu
 
-You can access the interactive menu in multiple ways:
+The interactive menu is accessed using the `ui` command:
 
 ```bash
-# Implicit menu (no arguments)
-claude-switch
-
-# Explicit UI command
+# Show interactive menu
 claude-switch ui
+```
 
-# Clear defaults to force menu
+**Other Commands:**
+
+```bash
+# Clear defaults to reset configuration
 claude-switch clear-defaults
-claude-switch  # Now shows menu
+
+# After clearing defaults, running without arguments shows menu
+claude-switch  # Now shows menu (only after clear-defaults)
 ```
 
 #### Switching Between Modes

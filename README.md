@@ -1,10 +1,10 @@
 # Claude Code Provider Switcher
 
-A powerful CLI tool that lets you seamlessly switch between different AI providers for Claude Code, including OpenRouter, Anthropic, Ollama, and the original Claude Code configuration.
+A powerful CLI tool that lets you seamlessly switch between different AI providers for Claude Code, including OpenRouter, Anthropic, MiniMax, Ollama, and the original Claude Code configuration.
 
 ## 🚀 Features
 
-- **Multi-Provider Support**: Switch between OpenRouter, Anthropic, Ollama, and original Claude Code
+- **Multi-Provider Support**: Switch between OpenRouter, Anthropic, MiniMax, Ollama, and original Claude Code
 - **Interactive Menu**: User-friendly interface for provider and model selection
 - **Default Configuration**: Set and save your preferred provider and model
 - **Model Selection**: Choose from hundreds of models across different providers
@@ -49,16 +49,18 @@ npm run link
 
 ```bash
 # Show interactive menu
-claude-switch
+claude-switch ui
 
 # Use a specific provider
 claude-switch openrouter
 claude-switch anthropic
+claude-switch minimax
 claude-switch ollama
 claude-switch original
 
 # Use specific provider with model selection
 claude-switch openrouter --model
+claude-switch minimax --model
 ```
 
 ### Configuration Management
@@ -87,15 +89,17 @@ The CLI is designed to create a `~/.claude/.claude-switch-env` (in your home dir
 # API Keys for different providers
 OPENROUTER_AUTH_TOKEN=your_openrouter_token_here
 ANTHROPIC_API_KEY=your_anthropic_key_here
+MINIMAX_AUTH_TOKEN=your_minimax_token_here
 OLLAMA_AUTH_TOKEN=your_ollama_token_here
 
 # Optional: Default models for each provider
 OPENROUTER_MODEL=openrouter/free
 ANTHROPIC_MODEL=claude-3-5-sonnet-latest
+MINIMAX_MODEL=minimax-m2.7
 OLLAMA_MODEL=minimax-m2.5:cloud
 
 # Default provider and model settings
-DEFAULT_PROVIDER=default  # Use 'default' to show menu on startup, or set to 'openrouter', 'anthropic', 'ollama', or 'original'
+DEFAULT_PROVIDER=default  # Use 'default' to show menu on startup, or set to 'openrouter', 'anthropic', 'minimax', 'ollama', or 'original'
 DEFAULT_MODEL=
 ```
 
@@ -163,20 +167,26 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 #### OpenRouter
 
 1. Get your API key from [OpenRouter](https://openrouter.ai/keys)
-2. Set `OPENROUTER_AUTH_TOKEN` in your `.env` file or through the interactive menu
-3. Run `claude-switch openrouter --model` to browse available models
+2. Run `claude-switch ui` to set the API key interactively
+3. Select OpenRouter from the menu to browse and choose available models
 
 #### Anthropic
 
 1. Get your API key from [Anthropic Console](https://console.anthropic.com/)
-2. Set `ANTHROPIC_API_KEY` in your `.env` file or through the interactive menu
-3. Run `claude-switch anthropic --model` to browse available models
+2. Run `claude-switch ui` to set the API key interactively
+3. Select Anthropic from the menu to browse and choose available models
+
+#### MiniMax
+
+1. Get your API key from [MiniMax Console](https://api.minimax.com/)
+2. Run `claude-switch ui` to set the API key interactively
+3. Select MiniMax from the menu to browse and choose available minimal models
 
 #### Ollama
 
 1. Install and run [Ollama](https://ollama.ai/)
-2. Optional: Set `OLLAMA_AUTH_TOKEN` in your `.env` file or through the interactive menu if using a remote Ollama instance
-3. Run `claude-switch ollama --model` to see locally available models
+2. Run `claude-switch ui` to set the API key interactively (optional, for remote instances)
+3. Select Ollama from the menu to see locally available models
 
 ## 📋 Commands Reference
 
@@ -186,6 +196,7 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | ------------ | ------------------------ | -------------------------- |
 | `openrouter` | Use OpenRouter provider  | `claude-switch openrouter` |
 | `anthropic`  | Use Anthropic provider   | `claude-switch anthropic`  |
+| `minimax`    | Use MiniMax provider     | `claude-switch minimax`    |
 | `ollama`     | Use Ollama provider      | `claude-switch ollama`     |
 | `original`   | Use original Claude Code | `claude-switch original`   |
 
@@ -194,6 +205,7 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | Command              | Description               | Example                            |
 | -------------------- | ------------------------- | ---------------------------------- |
 | `<provider> --model` | Select model for provider | `claude-switch openrouter --model` |
+| `minimax --model`    | Select MiniMax model      | `claude-switch minimax --model`    |
 
 ### Configuration Commands
 
@@ -212,6 +224,7 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | ------------ | ------------------------------ |
 | `openrouter` | `or`, `open`                   |
 | `anthropic`  | `ant`                          |
+| `minimax`    | `min`, `mm`                    |
 | `ollama`     | `oll`                          |
 | `original`   | `original`, `orig`, `def`, `d` |
 
@@ -241,12 +254,6 @@ claude-switch clear-defaults
 
 When you use the "Set as Default" option, the application saves your provider and model choices to provide a faster experience. However, if you want to change providers or access the full menu again, you must clear these defaults first.
 
-### What Clearing Defaults Does
-
-- Resets the default provider to "default" in `.env` file (which takes you to the interactive menu)
-- Clears any saved default model
-- Does not affect your saved API keys in `.env`
-
 **Always run `claude-switch clear-defaults` when:**
 
 - Menu options don't appear on startup
@@ -258,27 +265,28 @@ When you use the "Set as Default" option, the application saves your provider an
 
 ### Basic Usage
 
-When you run `claude-switch` without arguments, you'll see an interactive menu:
+When you run `claude-switch ui` without arguments, you'll see an interactive menu:
 
 ```
 Claude Code Provider Switcher
 
-Current default: OpenRouter (openrouter/free)
+Current default: MiniMax (minimax-m2.7)
 
 Available providers:
 
 ❯ 1) OpenRouter    Aliases: (openrouter, or, open)
   2) Ollama         Aliases: (ollama, oll)
   3) Anthropic      Aliases: (anthropic, ant)
-  4) Original Claude Code  Aliases: (original, orig, def, d)
-  5) Set as Default  Aliases: (set-default)
-  6) Manage API Keys  Aliases: (api-keys, keys)
-  7) Help           Aliases: (help, -h, --help)
+  4) MiniMax        Aliases: (minimax, min, mm)
+  5) Original Claude Code  Aliases: (original, orig, def, d)
+  6) Set as Default  Aliases: (set-default)
+  7) Manage API Keys  Aliases: (api-keys, keys)
+  8) Help           Aliases: (help, -h, --help)
 
 Controls:
 ↑/↓ - Navigate
 Enter - Select provider
-1-7 - Quick select
+1-8 - Quick select
 ESC - Exit
 ```
 

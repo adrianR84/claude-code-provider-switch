@@ -22,6 +22,7 @@ const {
   getDefaultModel,
   getProviderDefaultModel,
 } = require("../lib/config");
+const { ENV_VARS } = require("../lib/constants");
 
 // Global state to prevent infinite recursion and race conditions
 let pendingRestartTimeout = null;

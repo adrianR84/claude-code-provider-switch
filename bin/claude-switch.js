@@ -433,8 +433,8 @@ async function main(forceMenu = false, isRestart = false) {
     (arg) =>
       arg !== "--model" &&
       arg !== command && // Filter out the provider command
-      arg !== directModel, // Filter out the direct model name
-    !allProviderAliases.includes(arg), // Filter out all provider aliases
+      arg !== directModel && // Filter out the direct model name
+      !allProviderAliases.includes(arg), // Filter out all provider aliases
   );
 
   // Find provider ID from command using helper function

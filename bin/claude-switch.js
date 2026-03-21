@@ -217,13 +217,10 @@ async function showInteractiveMenu() {
         await launchAnthropic(false, [], selectedModel);
         break;
       case "minimax":
-        const minimaxModel =
-          selectedModel || getProviderDefaultModel("minimax");
-        await launchMinimax(false, [], minimaxModel);
+        await launchMinimax(false, [], selectedModel);
         break;
       case "ollama":
-        const ollamaModel = selectedModel || getProviderDefaultModel("ollama");
-        await launchOllama(false, [], ollamaModel);
+        await launchOllama(false, [], selectedModel);
         break;
       case "original":
         await launchDefault([]);

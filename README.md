@@ -5,7 +5,9 @@ A powerful CLI tool that lets you seamlessly switch between different AI provide
 ## 🚀 Features
 
 - **Multi-Provider Support**: Switch between OpenRouter, Anthropic, MiniMax, Ollama, and original Claude Code
-- **Interactive Menu**: User-friendly interface for provider and model selection
+- **Enhanced Interactive Menu**: Beautiful, intuitive interface with visual hierarchy and icons
+- **Centralized Configuration**: Secure, centralized base URL management for all providers
+- **Security-First**: Explicit base URL configuration prevents URL hijacking attacks
 - **Default Configuration**: Set and save your preferred provider and model
 - **Model Selection**: Choose from hundreds of models across different providers
 - **Auto-Restart**: Automatically restarts with new configuration after changes
@@ -48,7 +50,7 @@ npm run link
 ### Basic Usage
 
 ```bash
-# Show interactive menu
+# Show interactive menu with enhanced visual interface
 claude-switch ui
 
 # Use a specific provider
@@ -61,6 +63,41 @@ claude-switch original
 # Use specific provider with model selection
 claude-switch openrouter --model
 claude-switch minimax --model
+```
+
+### Enhanced Menu Interface
+
+When you run `claude-switch ui`, you'll see a beautifully formatted interactive menu:
+
+```
+Claude Code Provider Switcher
+
+Configuration: Global (~/.claude/.claude-switch-env)
+
+Current default: OpenRouter ⭐ [DEFAULT] (openrouter/free)
+
+Available providers:
+
+❯ 1) OpenRouter ⭐ [DEFAULT] ── (openrouter, or, open)
+  2) Ollama ── (ollama, oll)
+  3) Minimax ── (minimax, min, mm)
+  4) Anthropic ── (anthropic, ant)
+  5) Original Claude Code ── (original, orig, def, d)
+──────────────────────────────────────────────────────────
+  6) ⚙️ Set as Default
+  7) 🔑 Manage API Keys
+  8) ❓ Help
+
+🎯 Navigation:
+  • Use ↑/↓ arrows to navigate options
+  • Press Enter to select highlighted option
+  • Press 1-8 for quick select
+  • Press ESC to exit
+
+⭐ Tips:
+  • ⭐ indicates your current default provider
+  • 🌐 Providers: Launch AI models with different services
+  • 🔸 Management: Configure settings and preferences
 ```
 
 ### Configuration Management
@@ -81,6 +118,15 @@ claude-switch api-keys
 
 ## ⚙️ Configuration
 
+### Security & Centralization
+
+The CLI now features **centralized base URL management** for enhanced security:
+
+- **🔒 Secure**: All providers use explicitly configured base URLs from `constants.js`
+- **🛡️ Anti-Hijacking**: Prevents URL hijacking through malicious environment variables
+- **📍 Centralized**: Single source of truth for all provider configurations
+- **✅ Consistent**: Uniform behavior across all providers
+
 ### Environment Variables
 
 The CLI is designed to create a `~/.claude/.claude-switch-env` (in your home directory) with this syntax:
@@ -94,9 +140,9 @@ OLLAMA_AUTH_TOKEN=your_ollama_token_here
 
 # Optional: Default models for each provider
 OPENROUTER_MODEL=openrouter/free
+OLLAMA_MODEL=minimax-m2.5:cloud
 ANTHROPIC_MODEL=claude-3-5-sonnet-latest
 MINIMAX_MODEL=minimax-m2.7
-OLLAMA_MODEL=minimax-m2.5:cloud
 
 # Default provider and model settings
 DEFAULT_PROVIDER=default  # Use 'default' to show menu on startup, or set to 'openrouter', 'anthropic', 'minimax', 'ollama', or 'original'
@@ -159,8 +205,9 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 
 - 🔐 **Secure**: API keys are masked for display (shows only first 4 and last 4 characters)
 - 🎯 **Visual**: Clear status indicators (✅/❌) show which providers have keys configured
-- ⚡ **Interactive**: Arrow key navigation with visual selection indicators
+- ⚡ **Interactive**: Arrow key navigation with visual selection indicators and icons
 - 🔄 **Flexible**: Update, remove, or set new API keys interactively
+- 🎨 **Enhanced UI**: Beautiful menu with visual hierarchy and intuitive navigation
 
 ### Provider Setup
 
@@ -252,43 +299,26 @@ claude-switch clear-defaults
 
 ### Why This Happens
 
-When you use the "Set as Default" option, the application saves your provider and model choices to provide a faster experience. However, if you want to change providers or access the full menu again, you must clear these defaults first.
+When you use the "Set as Default" option, the application saves your provider and model choices to provide a faster experience. However, if you want to change providers or access the full menu again, you must clear these defaults first with `claude-switch clear-defaults`
 
-**Always run `claude-switch clear-defaults` when:**
+## 🎨 Enhanced Menu Features
 
-- Menu options don't appear on startup
-- You want to try a different provider
-- You want to change your default model
-- The application bypasses the menu
+The interactive menu includes several visual enhancements:
 
-## � Quick Start
+### Visual Elements
 
-### Basic Usage
+- **Icons**: Management options have intuitive icons (⚙️ Settings, 🔑 Keys, ❓ Help, etc.)
+- **Color Coding**: Different colors for different option types
+- **Star Indicator**: ⭐ shows your current default provider
+- **Separator Line**: Clean visual separation between providers and management options
+- **Inline Aliases**: Provider aliases displayed on the same line for cleaner layout
 
-When you run `claude-switch ui` without arguments, you'll see an interactive menu:
+### Navigation Improvements
 
-```
-Claude Code Provider Switcher
-
-Current default: MiniMax (minimax-m2.7)
-
-Available providers:
-
-❯ 1) OpenRouter    Aliases: (openrouter, or, open)
-  2) Ollama         Aliases: (ollama, oll)
-  3) Anthropic      Aliases: (anthropic, ant)
-  4) MiniMax        Aliases: (minimax, min, mm)
-  5) Original Claude Code  Aliases: (original, orig, def, d)
-  6) Set as Default  Aliases: (set-default)
-  7) Manage API Keys  Aliases: (api-keys, keys)
-  8) Help           Aliases: (help, -h, --help)
-
-Controls:
-↑/↓ - Navigate
-Enter - Select provider
-1-8 - Quick select
-ESC - Exit
-```
+- **Arrow Keys**: Smooth up/down navigation with visual feedback
+- **Quick Select**: Press number keys for instant selection
+- **ESC Support**: Exit the menu cleanly
+- **Visual Selection**: Clear indicator (❯) shows currently selected option
 
 ## 🔧 Advanced Usage
 

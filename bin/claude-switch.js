@@ -22,7 +22,11 @@ const {
   getDefaultModel,
   getProviderDefaultModel,
 } = require("../lib/config");
-const { ENV_VARS } = require("../lib/constants");
+const {
+  ENV_VARS,
+  getAllProviderAliases,
+  getProviderIdFromCommand,
+} = require("../lib/constants");
 
 // Global state to prevent infinite recursion and race conditions
 let pendingRestartTimeout = null;
@@ -360,21 +364,8 @@ async function main(forceMenu = false, isRestart = false) {
   // Check for default provider first (but only for non-provider commands)
   const defaultProvider = getDefaultProvider();
   const defaultModel = getDefaultModel();
-  const isProviderCommand = [
-    "openrouter",
-    "or",
-    "open",
-    "anthropic",
-    "ant",
-    "minimax",
-    "min",
-    "mm",
-    "ollama",
-    "oll",
-    "original",
-    "def",
-    "d",
-  ].includes(args[0]?.toLowerCase());
+  const allProviderAliases = getAllProviderAliases();
+  const isProviderCommand = allProviderAliases.includes(args[0]?.toLowerCase());
 
   if (
     !isProviderCommand &&
@@ -441,54 +432,37 @@ async function main(forceMenu = false, isRestart = false) {
   const extraArgs = args.filter(
     (arg) =>
       arg !== "--model" &&
-      arg !== "openrouter" &&
-      arg !== "anthropic" &&
-      arg !== "minimax" &&
-      arg !== "ollama" &&
-      arg !== "default" &&
-      arg !== "or" &&
-      arg !== "open" &&
-      arg !== "ant" &&
-      arg !== "min" &&
-      arg !== "mm" &&
-      arg !== "oll" &&
-      arg !== "def" &&
-      arg !== "d" &&
+      arg !== command && // Filter out the provider command
       arg !== directModel, // Filter out the direct model name
+    !allProviderAliases.includes(arg), // Filter out all provider aliases
   );
 
-  switch (command) {
+  // Find provider ID from command using helper function
+  const providerId = getProviderIdFromCommand(command);
+
+  switch (providerId) {
     case "openrouter":
-    case "or":
-    case "open":
       await launchOpenRouter(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "anthropic":
-    case "ant":
       await launchAnthropic(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "minimax":
-    case "min":
-    case "mm":
       await launchMinimax(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "ollama":
-    case "oll":
       await launchOllama(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "original":
-    case "def":
-    case "d":
       await launchDefault(extraArgs);
       break;
 
     default:
       handleError(new Error(`Unknown command '${command}'`), false);
-      showUsage();
       return;
   }
 }

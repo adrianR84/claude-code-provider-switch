@@ -347,7 +347,10 @@ async function main(forceMenu = false, isRestart = false) {
       const packagePath = require.resolve("../package.json");
       const packageJson = require(packagePath);
       const { log } = require("../lib/config");
-      log(`claude-code-provider-switch v${packageJson.version}`, "green");
+      log(
+        `@adrianr84/claude-code-provider-switch v${packageJson.version}`,
+        "green",
+      );
     } catch (error) {
       console.error("Error: Could not read version from package.json");
       process.exit(1);

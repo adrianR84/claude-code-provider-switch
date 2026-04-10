@@ -38,14 +38,14 @@ npm install -g @anthropic-ai/claude-code
 
 ```bash
 # Install globally
-npm install -g claude-code-provider-switch
+npm install -g @adrianr84/claude-code-provider-switch
 ```
 
 ### Global Installation (Method 2 - Alternative)
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/adrianR84/claude-code-provider-switch.git
 cd claude-code-provider-switch
 
 # Install globally
@@ -349,7 +349,7 @@ const {
   showApiKeyMenu,
   updateApiKey,
   maskApiKey,
-} = require("claude-code-provider-switch");
+} = require("@adrianr84/claude-code-provider-switch");
 
 // Set default provider programmatically
 await setDefaultProvider("openrouter");

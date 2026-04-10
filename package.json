@@ -36,6 +36,14 @@
   ],
   "author": "Adrian R",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adrianR84/claude-code-provider-switch.git"
+  },
+  "homepage": "https://github.com/adrianR84/claude-code-provider-switch#readme",
+  "bugs": {
+    "url": "https://github.com/adrianR84/claude-code-provider-switch/issues"
+  },
   "engines": {
     "node": ">=14.0.0"
   },

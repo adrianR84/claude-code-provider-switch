@@ -225,7 +225,7 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 
 #### MiniMax
 
-1. Get your API key from [MiniMax Console](https://api.minimax.com/)
+1. Get your API key from [MiniMax Console](https://minimax.io/)
 2. Run `claude-switch ui` to set the API key interactively
 3. Select MiniMax from the menu to browse and choose available minimal models
 

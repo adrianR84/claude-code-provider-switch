@@ -4,7 +4,8 @@
   "description": "Cross-platform Claude Code provider switcher (OpenRouter, Ollama, Anthropic)",
   "main": "index.js",
   "bin": {
-    "claude-switch": "./bin/claude-switch.js"
+    "claude-switch": "./bin/claude-switch.js",
+    "cs": "./bin/claude-switch.js"
   },
   "scripts": {
     "start": "node bin/claude-switch.js",

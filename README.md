@@ -2,6 +2,16 @@
 
 A powerful CLI tool that lets you seamlessly switch between different AI providers for Claude Code, including OpenRouter, Anthropic, MiniMax, Ollama, and the original Claude Code configuration.
 
+## Command Aliases
+
+> **Quick Tip**: Use `cs` as a shorter alias instead of typing `claude-switch`!
+>
+> ```bash
+> # Both commands work the same:
+> claude-switch openrouter
+> cs openrouter  # Much shorter!
+> ```
+
 ## 🚀 Features
 
 - **Multi-Provider Support**: Switch between OpenRouter, Anthropic, MiniMax, Ollama, and original Claude Code
@@ -247,6 +257,8 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | `ollama`     | Use Ollama provider      | `claude-switch ollama`     |
 | `original`   | Use original Claude Code | `claude-switch original`   |
 
+> **Note**: All examples also work with the shorter `cs` alias (e.g., `cs openrouter`)
+
 ### Model Selection
 
 | Command              | Description               | Example                            |
@@ -264,6 +276,8 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | `api-keys`       | Manage API keys interactively | `claude-switch api-keys`       |
 | `help`           | Show help information         | `claude-switch --help`         |
 | `version`        | Show Version information      | `claude-switch --version`      |
+
+> **Note**: All commands also work with the shorter `cs` alias (e.g., `cs --help`)
 
 ### Aliases
 

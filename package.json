@@ -15,7 +15,7 @@
     "pub": "npm version patch && npm publish --access public && git push origin main --tags",
     "pub-minor": "npm version minor && npm publish --access public && git push origin main --tags",
     "pub-major": "npm version major && npm publish --access public && git push origin main --tags",
-    "deploy": "npm run publish && echo '✅ Deployed to npm!'",
+    "deploy": "npm publish --access public && echo '✅ Deployed to npm!'",
     "test:validation": "node test/test-validation-errors.js",
     "test:provider": "node test/test-provider-integration.js",
     "test:comprehensive": "node test/test-comprehensive.js",

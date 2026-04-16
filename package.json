@@ -32,6 +32,7 @@
     "claude code ai model provider switcher",
     "claude code OpenRouter",
     "claude code Ollama",
+    "claude code Minimax",
     "cli"
   ],
   "author": "Adrian R",

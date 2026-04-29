@@ -62,17 +62,25 @@ npm run link
 ```bash
 # Show interactive menu with enhanced visual interface
 claude-switch ui
+cs ui  # Much shorter!
 
 # Use a specific provider
 claude-switch openrouter
+cs openrouter  # Much shorter!
 claude-switch anthropic
+cs anthropic  # Much shorter!
 claude-switch minimax
+cs minimax  # Much shorter!
 claude-switch ollama
+cs ollama  # Much shorter!
 claude-switch original
+cs original  # Much shorter!
 
 # Use specific provider with model selection
 claude-switch openrouter --model
+cs openrouter --model  # Much shorter!
 claude-switch minimax --model
+cs minimax --model  # Much shorter!
 ```
 
 ### Enhanced Menu Interface
@@ -115,15 +123,19 @@ Available providers:
 ```bash
 # Set up default provider and model interactively
 claude-switch set-default
+cs set-default  # Much shorter!
 
 # View current defaults
 claude-switch show-defaults
+cs show-defaults  # Much shorter!
 
 # Clear all defaults
 claude-switch clear-defaults
+cs clear-defaults  # Much shorter!
 
 # Manage API keys interactively
 claude-switch api-keys
+cs api-keys  # Much shorter!
 ```
 
 ## ⚙️ Configuration
@@ -207,6 +219,7 @@ For easier API key management, use the interactive menu:
 ```bash
 # Launch interactive API key management
 claude-switch api-keys
+cs api-keys  # Much shorter!
 ```
 
 Or access it through the main menu (option 6) when you run `claude-switch` without arguments.
@@ -257,7 +270,7 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | `ollama`     | Use Ollama provider      | `claude-switch ollama`     |
 | `original`   | Use original Claude Code | `claude-switch original`   |
 
-> **Note**: All examples also work with the shorter `cs` alias (e.g., `cs openrouter`)
+> **Note**: All examples also work with the shorter `cs` alias (e.g., `cs openrouter`, `cs anthropic`, `cs minimax`, `cs ollama`, `cs original`)
 
 ### Model Selection
 
@@ -277,7 +290,7 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 | `help`           | Show help information         | `claude-switch --help`         |
 | `version`        | Show Version information      | `claude-switch --version`      |
 
-> **Note**: All commands also work with the shorter `cs` alias (e.g., `cs --help`)
+> **Note**: All commands also work with the shorter `cs` alias (e.g., `cs --help`, `cs --version`, `cs set-default`, `cs clear-defaults`)
 
 ### Aliases
 
@@ -295,9 +308,13 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 
 ```bash
 claude-switch --continue           # Continue previous conversation
+cs --continue  # Much shorter!       # Continue previous conversation
 claude-switch --resume            # Resume last session
+cs --resume  # Much shorter!        # Resume last session
 claude-switch -p "Explain what this project does"  # Quick prompt without interactive mode
+cs -p "Explain what this project does"  # Much shorter!  # Quick prompt without interactive mode
 claude-switch -p "List all providers supported" --output-format json  # Get structured JSON output
+cs -p "List all providers supported" --output-format json  # Much shorter!  # Get structured JSON output
 
 ```
 
@@ -309,6 +326,7 @@ claude-switch -p "List all providers supported" --output-format json  # Get stru
 
 ```bash
 claude-switch clear-defaults
+cs clear-defaults  # Much shorter!
 ```
 
 ### Why This Happens
@@ -379,6 +397,7 @@ npm run link
 
 # Run directly from source
 npm run dev -- --help
+cs --help  # Much shorter!
 
 # Run tests
 npm run test:all
@@ -401,7 +420,7 @@ npm install -g .
 
 **Menu selection not showing options, opens Claude Code directly**
 
-- Try clearing defaults: `claude-switch clear-defaults`
+- Try clearing defaults: `claude-switch clear-defaults` (or `cs clear-defaults`)
 
 **File permission errors**
 

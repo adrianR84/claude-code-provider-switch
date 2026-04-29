@@ -141,7 +141,7 @@ The CLI now features **centralized base URL management** for enhanced security:
 
 The CLI is designed to create a `~/.claude/.claude-switch-env` (in your home directory) with this syntax:
 
-```env
+```bash
 # API Keys for different providers
 OPENROUTER_AUTH_TOKEN=your_openrouter_token_here
 ANTHROPIC_API_KEY=your_anthropic_key_here
@@ -159,7 +159,7 @@ DEFAULT_PROVIDER=default  # Use 'default' to show menu on startup, or set to 'op
 DEFAULT_MODEL=
 ```
 
-When you run the CLI for the first time, based on your selection, it will ask for the API keys or Auth Tokens and after this will be saved in the `.env` file for future use.
+When you run the CLI for the first time, based on your selection, it will ask for the API keys or Auth Tokens and after this will be saved in the environment file for future use.
 
 ### Global vs Local Configuration
 
@@ -168,13 +168,13 @@ The CLI supports two configuration modes:
 #### Global Configuration (Default)
 
 - **Location**: `~/.claude/.claude-switch-env` (in your home directory)
-- **Priority**: Used when no local `.env` file exists
+- **Priority**: Used when no local environment file exists
 - **Benefit**: Share configuration across all projects
-- **Creation**: Automatically created on first run when no local `.env` exists
+- **Creation**: Automatically created on first run when no local environment file exists
 
 #### Local Configuration
 
-- **Location**: `.env` file in your project directory
+- **Location**: `.claude-switch-env-local` file in your project directory
 - **Priority**: Overrides global configuration when present
 - **Benefit**: Project-specific settings
 - **Creation**: Create manually or use "Save Configuration Locally" menu option
@@ -184,8 +184,8 @@ The CLI supports two configuration modes:
 The main menu shows which configuration source is active:
 
 ```
-Configuration: Global (~/.claude/.claude-switch-en)
-Configuration: Local (current_folder/.env)
+Configuration: Global (~/.claude/.claude-switch-env)
+Configuration: Local (current_folder/.claude-switch-env-local)
 ```
 
 #### Menu Behavior
@@ -197,7 +197,7 @@ Configuration: Local (current_folder/.env)
 #### Switching Between Modes
 
 - **To Local**: Use "Save Configuration Locally" option from main menu
-- **To Global**: Delete local `.env` file to fall back to global config
+- **To Global**: Delete local `.claude-switch-env-local` file to fall back to global config
 - **Priority**: Local always takes precedence over global when both exist
 
 ### API Key Management
@@ -396,8 +396,8 @@ npm install -g .
 
 **"API key required" error**
 
-- Check your `.env` file contains the correct API key
-- Ensure the `.env` file is in your current working directory
+- Check your environment file contains the correct API key
+- Ensure the environment file is in your current working directory
 
 **Menu selection not showing options, opens Claude Code directly**
 
@@ -405,7 +405,7 @@ npm install -g .
 
 **File permission errors**
 
-- Ensure you have write permissions to create/modify the `.env` file
+- Ensure you have write permissions to create/modify the environment file
 - Try running with elevated permissions if necessary
 
 ### Debug Mode

@@ -43,3 +43,4 @@ When working on this project:
 - Configuration files: `.env` (local) and `~/.claude/.claude-switch-env` (global)
 - Test files located in: `test/` directory
 - Library modules located in: `lib/` directory
+- **Wiki:** Run `/wiki-compile` to keep it current; browse at `wiki/INDEX.md`

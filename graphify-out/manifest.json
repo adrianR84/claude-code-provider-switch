@@ -1,0 +1,126 @@
+{
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\index.js": {
+    "mtime": 1774036098.9404185,
+    "hash": "ed1246415c6fa5efc83a4b1f42e785b1"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\bin\\claude-switch.js": {
+    "mtime": 1775814164.0438697,
+    "hash": "582f507be6abde3f44d129ce76771238"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\anthropic.js": {
+    "mtime": 1778665690.6754851,
+    "hash": "a23c4cc21254029629f0a8f83eca03fe"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\cache.js": {
+    "mtime": 1773158442.0412023,
+    "hash": "b39c9864ef32e0dce5240731d3eaa56d"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\claude-spawn.js": {
+    "mtime": 1778665770.3110702,
+    "hash": "21393c35fbff33778d25497e3bcb64bf"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\config.js": {
+    "mtime": 1777447642.3746474,
+    "hash": "9d23382f29ab7c7a0121ea5ed79b5410"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\constants.js": {
+    "mtime": 1777445861.988425,
+    "hash": "3c421da4af5bfe9ce911d74779a193c8"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\default.js": {
+    "mtime": 1778665650.818094,
+    "hash": "129a671f71984503c6251467fbeaa9e9"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\errors.js": {
+    "mtime": 1773154988.1406138,
+    "hash": "6df186a567895da0a54fd224a5b9011f"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\menu.js": {
+    "mtime": 1775811847.7508087,
+    "hash": "8f7683d337f136beb9d2ee36f63519df"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\minimax.js": {
+    "mtime": 1778665691.3734562,
+    "hash": "273a18941e797f454e98bbf84569785b"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\ollama.js": {
+    "mtime": 1778665691.3864553,
+    "hash": "f7898f296bd5f6ab54e0b289ef622075"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\openrouter.js": {
+    "mtime": 1778665691.3804567,
+    "hash": "52c3aeafff4f119c62a73102d6dbaede"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\lib\\validation.js": {
+    "mtime": 1774036091.2617352,
+    "hash": "eba675d8244e47b8eadb36007be8f4ab"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\test\\run-tests.js": {
+    "mtime": 1773157301.9249544,
+    "hash": "3acac484398ad4ceca64c03f833aee9f"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\test\\test-comprehensive.js": {
+    "mtime": 1773159968.4465418,
+    "hash": "961e2571f4b9a7d3b4f83ac8a15536a5"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\test\\test-provider-integration.js": {
+    "mtime": 1773162660.271859,
+    "hash": "f57fba763ab44572ed43b82d96daf09e"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\test\\test-validation-errors.js": {
+    "mtime": 1774036091.2643278,
+    "hash": "9c31522d5745536e6347b305fd37956d"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\AGENTS.md": {
+    "mtime": 1776719654.3088071,
+    "hash": "438e29620e7016ceb33ff34c940a5b55"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\CLAUDE.md": {
+    "mtime": 1778276065.3206012,
+    "hash": "747e73a5e1af4b72c0d65c9169c23199"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\README.md": {
+    "mtime": 1777449567.8463144,
+    "hash": "2ba7dba8d88b28e58c61fdcdba6a66c5"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\CONTEXT.md": {
+    "mtime": 1776719626.4275563,
+    "hash": "6348f66a914017d206e7e424bc82600a"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\INDEX.md": {
+    "mtime": 1776719603.177268,
+    "hash": "6f450bc9f565338a6de9f20b4ae82a3f"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\log.md": {
+    "mtime": 1776719616.045815,
+    "hash": "a33a84e6efe2713d1e76693fd8cb3021"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\schema.md": {
+    "mtime": 1776719605.8935847,
+    "hash": "e0de99b55253fcf754d3d88c0cca5d9e"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\topics\\anthropic.md": {
+    "mtime": 1776719575.112343,
+    "hash": "c9ec0150603e6562475294bffdd0f4a0"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\topics\\bin.md": {
+    "mtime": 1776719568.7411602,
+    "hash": "d2e4269adaa03c98e73fb6d02f6806d1"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\topics\\core.md": {
+    "mtime": 1776719584.9169574,
+    "hash": "6f2e1bc67001556f1be0e9e3615ed9ee"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\topics\\minimax.md": {
+    "mtime": 1776719574.1323254,
+    "hash": "21f8d823201449cf7570955dc9c6cfec"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\topics\\ollama.md": {
+    "mtime": 1776719587.925452,
+    "hash": "1ae91622659176fa4d7f530663d512b3"
+  },
+  "C:\\_Adi\\_Work\\Apps\\claude-code-provider-switch\\wiki\\topics\\openrouter.md": {
+    "mtime": 1776719568.8483832,
+    "hash": "beb816692333fed602f91afecbd17082"
+  }
+}

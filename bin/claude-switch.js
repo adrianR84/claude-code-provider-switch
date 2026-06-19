@@ -7,6 +7,7 @@
 
 const {
   showProviderMenu,
+  showProviderSubmenu,
   showUsage,
   showDefaults,
   setupDefaults,
@@ -165,10 +166,10 @@ async function showInteractiveMenu() {
 
   // Show interactive menu loop
   mainLoop: while (true) {
-    const selectedProvider = await showProviderMenu();
+    const selectedOption = await showProviderMenu();
 
-    // Handle special menu options
-    switch (selectedProvider.id) {
+    // Handle special menu options first
+    switch (selectedOption.id) {
       case "help":
         showUsage();
         return;
@@ -205,33 +206,40 @@ async function showInteractiveMenu() {
         });
         // Continue the loop to show menu again
         continue mainLoop;
-    }
+      case "choose-provider":
+        // Show the provider submenu
+        const selectedProvider = await showProviderSubmenu();
+        if (!selectedProvider) {
+          // User pressed ESC, return to main menu
+          continue mainLoop;
+        }
 
-    // For provider selection, show model selection
-    let selectedModel = null;
-    if (selectedProvider.id !== "original") {
-      selectedModel = await showModelSelectionForProvider(selectedProvider);
-    }
+        // For provider selection, show model selection
+        let selectedModel = null;
+        if (selectedProvider.id !== "original") {
+          selectedModel = await showModelSelectionForProvider(selectedProvider);
+        }
 
-    // Launch the selected provider with the selected model
-    switch (selectedProvider.id) {
-      case "openrouter":
-        await launchOpenRouter(false, [], selectedModel);
-        break;
-      case "anthropic":
-        await launchAnthropic(false, [], selectedModel);
-        break;
-      case "minimax":
-        await launchMinimax(false, [], selectedModel);
-        break;
-      case "ollama":
-        await launchOllama(false, [], selectedModel);
-        break;
-      case "original":
-        await launchDefault([]);
-        break;
+        // Launch the selected provider with the selected model
+        switch (selectedProvider.id) {
+          case "openrouter":
+            await launchOpenRouter(false, [], selectedModel);
+            break;
+          case "anthropic":
+            await launchAnthropic(false, [], selectedModel);
+            break;
+          case "minimax":
+            await launchMinimax(false, [], selectedModel);
+            break;
+          case "ollama":
+            await launchOllama(false, [], selectedModel);
+            break;
+          case "original":
+            await launchDefault([]);
+            break;
+        }
+        return;
     }
-    return;
   }
 }
 

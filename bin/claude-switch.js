@@ -166,15 +166,23 @@ async function showInteractiveMenu() {
 
   // Show interactive menu loop
   mainLoop: while (true) {
-    const selectedOption = await showProviderMenu();
+    const selectedProvider = await showProviderMenu();
 
-    // Handle special menu options first
-    switch (selectedOption.id) {
+    // Handle ESC / cancel — exit the program
+    if (!selectedProvider) {
+      return;
+    }
+
+    // Handle special menu options
+    switch (selectedProvider.id) {
       case "help":
         showUsage();
         return;
       case "set-default":
-        await setupDefaults();
+        const setupResult = await setupDefaults();
+        if (setupResult && setupResult.backToMenu) {
+          continue mainLoop;
+        }
         handlePostConfiguration("restart", true);
         return;
       case "show-defaults":

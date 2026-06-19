@@ -12,6 +12,7 @@ const {
   showDefaults,
   setupDefaults,
   showModelSelectionForProvider,
+  showClaudeCodeSettingsSubmenu,
 } = require("../lib/menu");
 const { launchOpenRouter } = require("../lib/openrouter");
 const { launchAnthropic } = require("../lib/anthropic");
@@ -214,6 +215,34 @@ async function showInteractiveMenu() {
         });
         // Continue the loop to show menu again
         continue mainLoop;
+      case "claude-code-settings": {
+        const result = await showClaudeCodeSettingsSubmenu();
+        if (!result) {
+          // ESC pressed — return to main menu
+          continue mainLoop;
+        }
+        if (result.id === "inject") {
+          const { injectClaudeCodeSettings } = require("../lib/menu");
+          injectClaudeCodeSettings();
+          log("Done. Restart Claude Code for changes to take effect.", "green");
+        } else if (result.id === "delete") {
+          const { deleteClaudeCodeSettings } = require("../lib/menu");
+          deleteClaudeCodeSettings();
+          log("Variables removed from Claude Code settings.", "green");
+        }
+        log("Press Enter to continue...", "cyan");
+        const rl = require("readline").createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        await new Promise((resolve) => {
+          rl.question("", () => {
+            rl.close();
+            resolve();
+          });
+        });
+        continue mainLoop;
+      }
       case "choose-provider":
         // Show the provider submenu
         const selectedProvider = await showProviderSubmenu();

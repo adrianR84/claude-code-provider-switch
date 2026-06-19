@@ -54,5 +54,8 @@
     "README.md",
     "index.js"
   ],
-  "preferGlobal": true
+  "preferGlobal": true,
+  "dependencies": {
+    "terminal-menu": "^2.1.1"
+  }
 }

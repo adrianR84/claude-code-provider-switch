@@ -43,6 +43,8 @@ jspm_packages/
 *~
 # Wiki folder
 wiki/
+# Graphify output
+graphify-out/
 # All files starting with dot (catch-all for dotfiles)
 .*
 # .claude-switch-env-local - Contains sensitive API keys, keep private

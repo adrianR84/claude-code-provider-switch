@@ -13,6 +13,7 @@ module.exports = {
   launchOpenRouter: require("./lib/openrouter").launchOpenRouter,
   launchAnthropic: require("./lib/anthropic").launchAnthropic,
   launchOllama: require("./lib/ollama").launchOllama,
+  launchProxy: require("./lib/proxy").launchProxy,
   launchDefault: require("./lib/default").launchDefault,
 
   // Menu functions

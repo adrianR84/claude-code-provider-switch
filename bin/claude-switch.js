@@ -18,6 +18,7 @@ const { launchOpenRouter } = require("../lib/openrouter");
 const { launchAnthropic } = require("../lib/anthropic");
 const { launchOllama } = require("../lib/ollama");
 const { launchMinimax } = require("../lib/minimax");
+const { launchProxy } = require("../lib/proxy");
 const { launchDefault } = require("../lib/default");
 const {
   getDefaultProvider,
@@ -271,6 +272,9 @@ async function showInteractiveMenu() {
           case "ollama":
             await launchOllama(false, [], selectedModel);
             break;
+          case "proxy":
+            await launchProxy(false, [], selectedModel);
+            break;
           case "original":
             await launchDefault([]);
             break;
@@ -313,6 +317,9 @@ async function handleCliMode(args) {
         break;
       case "ollama":
         await launchOllama(false, args, modelToUse);
+        break;
+      case "proxy":
+        await launchProxy(false, args, modelToUse);
         break;
       case "original":
         await launchDefault(args);
@@ -453,6 +460,9 @@ async function main(forceMenu = false, isRestart = false) {
       case "ollama":
         await launchOllama(false, extraArgs, modelToUse);
         break;
+      case "proxy":
+        await launchProxy(false, extraArgs, modelToUse);
+        break;
       case "original":
         await launchDefault(extraArgs);
         break;
@@ -503,6 +513,10 @@ async function main(forceMenu = false, isRestart = false) {
 
     case "ollama":
       await launchOllama(showModelMenuParam, extraArgs, directModel);
+      break;
+
+    case "proxy":
+      await launchProxy(showModelMenuParam, extraArgs, directModel);
       break;
 
     case "original":

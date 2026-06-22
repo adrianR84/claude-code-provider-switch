@@ -1,6 +1,6 @@
 # Claude Code Provider Switcher
 
-A powerful CLI tool that lets you seamlessly switch between different AI providers for Claude Code, including OpenRouter, Anthropic, MiniMax, Ollama, and the original Claude Code configuration.
+A powerful CLI tool that lets you seamlessly switch between different AI providers for Claude Code, including OpenRouter, Anthropic, MiniMax, Ollama, Claude Code Proxy, and the original Claude Code configuration.
 
 ## Command Aliases
 
@@ -14,7 +14,7 @@ A powerful CLI tool that lets you seamlessly switch between different AI provide
 
 ## 🚀 Features
 
-- **Multi-Provider Support**: Switch between OpenRouter, Anthropic, MiniMax, Ollama, and original Claude Code
+- **Multi-Provider Support**: Switch between OpenRouter, Anthropic, MiniMax, Ollama, Claude Code Proxy, and original Claude Code
 - **Enhanced Interactive Menu**: Beautiful, intuitive interface with visual hierarchy and icons
 - **Centralized Configuration**: Secure, centralized base URL management for all providers
 - **Security-First**: Explicit base URL configuration prevents URL hijacking attacks
@@ -258,17 +258,45 @@ Or access it through the main menu (option 6) when you run `claude-switch` witho
 2. Run `claude-switch ui` to set the API key interactively (optional, for remote instances)
 3. Select Ollama from the menu to see locally available models
 
+#### Claude Code Proxy
+
+Use Claude Code with OpenAI, Gemini, or other LiteLLM backends through a local proxy server.
+
+1. Install the proxy server:
+
+   **Docker (recommended):**
+   ```bash
+   git clone https://github.com/1rgs/claude-code-proxy.git
+   cd claude-code-proxy
+   cp .env.example .env
+   # Edit .env: set OPENAI_API_KEY (required), GEMINI_API_KEY, etc.
+   docker run -d --env-file .env -p 8082:8082 ghcr.io/1rgs/claude-code-proxy:latest
+   ```
+
+   **Or from source:**
+   ```bash
+   git clone https://github.com/1rgs/claude-code-proxy.git
+   cd claude-code-proxy
+   cp .env.example .env
+   # Edit .env: set OPENAI_API_KEY (required)
+   uv run uvicorn server:app --host 0.0.0.0 --port 8082
+   ```
+
+2. Run `claude-switch proxy` — if the proxy is running, Claude Code launches immediately with `ANTHROPIC_BASE_URL=http://localhost:8082`
+3. Set a default model: add `PROXY_MODEL=gpt-4o` to your env file
+
 ## 📋 Commands Reference
 
 ### Provider Commands
 
-| Command      | Description              | Example                    |
-| ------------ | ------------------------ | -------------------------- |
-| `openrouter` | Use OpenRouter provider  | `claude-switch openrouter` |
-| `anthropic`  | Use Anthropic provider   | `claude-switch anthropic`  |
-| `minimax`    | Use MiniMax provider     | `claude-switch minimax`    |
-| `ollama`     | Use Ollama provider      | `claude-switch ollama`     |
-| `original`   | Use original Claude Code | `claude-switch original`   |
+| Command      | Description                     | Example                      |
+| ------------ | ------------------------------- | ---------------------------- |
+| `openrouter` | Use OpenRouter provider         | `claude-switch openrouter`   |
+| `anthropic`  | Use Anthropic provider          | `claude-switch anthropic`    |
+| `minimax`    | Use MiniMax provider            | `claude-switch minimax`      |
+| `ollama`     | Use Ollama provider             | `claude-switch ollama`       |
+| `proxy`      | Use Claude Code Proxy (LiteLLM) | `claude-switch proxy`        |
+| `original`   | Use original Claude Code        | `claude-switch original`     |
 
 > **Note**: All examples also work with the shorter `cs` alias (e.g., `cs openrouter`, `cs anthropic`, `cs minimax`, `cs ollama`, `cs original`)
 

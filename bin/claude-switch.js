@@ -24,9 +24,11 @@ const {
   getDefaultProvider,
   getDefaultModel,
   getProviderDefaultModel,
+  updateConfigFile,
 } = require("../lib/config");
 const {
   ENV_VARS,
+  PROVIDERS,
   getAllProviderAliases,
   getProviderIdFromCommand,
 } = require("../lib/constants");
@@ -256,6 +258,12 @@ async function showInteractiveMenu() {
         let selectedModel = null;
         if (selectedProvider.id !== "original") {
           selectedModel = await showModelSelectionForProvider(selectedProvider);
+        }
+
+        // Persist model to provider-specific env var (e.g. OPENROUTER_MODEL, ANTHROPIC_MODEL)
+        const modelEnvVar = PROVIDERS[selectedProvider.id]?.envVars?.model;
+        if (modelEnvVar && selectedModel) {
+          updateConfigFile(modelEnvVar, selectedModel, null);
         }
 
         // Launch the selected provider with the selected model
